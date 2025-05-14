@@ -28,6 +28,62 @@
   color: #61dafb;
 }
 
+/* Custom Card Styles */
+.custom-card {
+  border-radius: 10px;
+  padding: 20px;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.8), rgba(240, 240, 240, 0.8));
+  transition: all 0.3s ease-in-out;
+}
+
+.custom-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* Button Styling */
+.custom-button {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  text-transform: uppercase;
+  padding: 12px;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+}
+
+.custom-button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+}
+
+.custom-button:active {
+  transform: translateY(2px);
+  box-shadow: none;
+}
+
+/* Heading Style */
+h2 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  color: #007bff;
+}
+
+/* Alert Style */
+.alert {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  margin-top: 20px;
+}
+
+/* Button Size Adjustments for Small Screens */
+@media (max-width: 768px) {
+  .custom-button {
+    font-size: 14px;
+    padding: 10px;
+  }
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
