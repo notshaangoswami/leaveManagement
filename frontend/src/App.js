@@ -8,6 +8,7 @@ import ReportsPage from './pages/ReportsPage'; // Import ReportsPage
 import LeaveForm from './components/LeaveForm';
 import LeaveHistory from './components/LeaveHistory';
 import LeaveApproval from './components/LeaveApproval';
+import CalendarComponent from "./components/Calendar";
 
 function App() {
   const [currentPage, setCurrentPage] = useState('dashboard');
@@ -27,6 +28,7 @@ function App() {
   return (
     <div className="App">
       <Navbar onNavigate={handlePageChange} userRole={userRole} />
+      {/* <CalendarComponent/> */}
       <div className="content">
         {currentPage === 'dashboard' && renderDashboard()}
 
@@ -38,6 +40,9 @@ function App() {
         {currentPage === 'reports' && userRole === 'admin' && (
           <ReportsPage onNavigate={handlePageChange} />
         )}
+      </div>
+      <div className="calendar-section mt-5">
+        <CalendarComponent />
       </div>
     </div>
   );
