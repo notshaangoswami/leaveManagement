@@ -7,25 +7,91 @@ import {
   Alert,
   Spinner,
 } from 'react-bootstrap';
-import { getDashboardSummary } from '../services/api';
 
 function EmployeeDashboard({ onNavigate }) {
-  const [summary, setSummary] = useState(null);
+  const [summary, setSummary] = useState({ leavesApplied: 0, leavesRemaining: 0 });
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getDashboardSummary()
-      .then((data) => {
-        if (data) {
-          setSummary(data);
-          setError(false);
-        } else {
-          setError(true);
+    const fetchLeaveHistory = async () => {
+      try {
+        // Retrieve the JWT token from localStorage
+        const token = localStorage.getItem('token');
+    
+        const response = await fetch('http://localhost:8080/api/leave-applications/history', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`, // Add the JWT token to the Authorization header
+          },
+        });
+    
+        if (!response.ok) {
+          throw new Error('Failed to fetch leave history');
         }
-      })
-      .catch(() => setError(true))
-      .finally(() => setLoading(false));
+    
+        const data = await response.json();
+    
+        // Filter only approved leaves
+        const approvedLeaves = data.filter((leave) => leave.status === 'APPROVED');
+    
+        // Calculate the total number of approved leaves
+        const totalApprovedLeaves = approvedLeaves.reduce((sum, leave) => sum + leave.numberOfDays, 0);
+    
+        // Update the summary state with approved leaves
+        setSummary((prevSummary) => ({
+          ...prevSummary,
+          leavesApplied: totalApprovedLeaves,
+        }));
+    
+        setError(false);
+      } catch (err) {
+        console.error('Error fetching leave history:', err);
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    const fetchLeaveBalance = async () => {
+      try {
+        // Retrieve the JWT token from localStorage
+        const token = localStorage.getItem('token');
+  
+        const response = await fetch('http://localhost:8080/api/users/leave-balance', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`, // Add the JWT token to the Authorization header
+          },
+        });
+  
+        if (!response.ok) {
+          throw new Error('Failed to fetch leave balance');
+        }
+  
+        const data = await response.json();
+  
+        // Calculate the total leave balance
+        const totalBalance = data.reduce((sum, leave) => sum + leave.balance, 0);
+  
+        // Update the summary state with leaves remaining
+        setSummary((prevSummary) => ({
+          ...prevSummary,
+          leavesRemaining: totalBalance,
+        }));
+  
+        setError(false);
+      } catch (err) {
+        console.error('Error fetching leave balance:', err);
+        setError(true);
+      }
+    };
+  
+    // Fetch both leave history and leave balance
+    fetchLeaveHistory();
+    fetchLeaveBalance();
   }, []);
 
   if (loading)
@@ -56,7 +122,7 @@ function EmployeeDashboard({ onNavigate }) {
               <Card.Body>
                 <Card.Title className="fw-semibold text-muted">Leaves Applied</Card.Title>
                 <Card.Text className="display-5 fw-bold text-primary">
-                  {summary?.leavesApplied ?? 0}
+                  {summary.leavesApplied}
                 </Card.Text>
               </Card.Body>
             </Card>
@@ -67,7 +133,7 @@ function EmployeeDashboard({ onNavigate }) {
               <Card.Body>
                 <Card.Title className="fw-semibold text-muted">Leaves Remaining</Card.Title>
                 <Card.Text className="display-5 fw-bold text-success">
-                  {summary?.leavesRemaining ?? 0}
+                  {summary.leavesRemaining}
                 </Card.Text>
               </Card.Body>
             </Card>
@@ -98,19 +164,6 @@ function EmployeeDashboard({ onNavigate }) {
               <Card.Body>
                 <div style={{ fontSize: '2rem' }}>📚</div>
                 <Card.Text className="fw-semibold mt-2">Leave History</Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-
-          <Col md={3}>
-            <Card
-              className="text-center shadow-sm border-0 h-100"
-              onClick={() => onNavigate('leave-policy')}
-              style={{ cursor: 'pointer', backgroundColor: '#e3f2fd' }}
-            >
-              <Card.Body>
-                <div style={{ fontSize: '2rem' }}>📘</div>
-                <Card.Text className="fw-semibold mt-2">View Leave Policy</Card.Text>
               </Card.Body>
             </Card>
           </Col>

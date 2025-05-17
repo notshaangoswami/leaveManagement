@@ -2,8 +2,9 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
+import Button from 'react-bootstrap/Button'; // Import Button
 
-function BasicExample() {
+function BasicExample({ onLogout }) { // Destructure the prop properly
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container>
@@ -25,6 +26,7 @@ function BasicExample() {
               </NavDropdown.Item>
             </NavDropdown>
           </Nav>
+          <Button variant="outline-danger" onClick={onLogout}>Logout</Button> {/* Logout button */}
         </Navbar.Collapse>
       </Container>
     </Navbar>
