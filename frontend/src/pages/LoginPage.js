@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function LoginPage({ onLoginSuccess }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate(); // React Router's navigation hook
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -24,7 +26,8 @@ export default function LoginPage({ onLoginSuccess }) {
 
       const data = await response.json();
       localStorage.setItem('token', data.token); // Assumes { token: 'JWT...' }
-      onLoginSuccess(data.roles);
+      onLoginSuccess(data.roles); // Pass roles to App.js
+      navigate('/dashboard'); // Redirect to dashboard
     } catch (err) {
       setError(err.message);
     }
