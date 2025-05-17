@@ -14,6 +14,7 @@ function AdminDashboard({ onNavigate }) {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
   const [creditMessage, setCreditMessage] = useState('');
+  const [exportMessage, setExportMessage] = useState('');
 
   useEffect(() => {
     const fetchDashboardStats = async () => {
@@ -74,6 +75,45 @@ function AdminDashboard({ onNavigate }) {
     } catch (error) {
       console.error('Error crediting leaves:', error);
       setCreditMessage('An error occurred. Please try again.');
+    }
+  };
+
+  const handleExport = async (type) => {
+    setExportMessage(''); // Clear any previous messages
+    try {
+      const token = localStorage.getItem('token'); // Retrieve JWT token from localStorage
+      const url =
+        type === 'excel'
+          ? 'http://localhost:8080/api/reports/leave-usage/export/excel'
+          : 'http://localhost:8080/api/reports/leave-usage/export/pdf';
+  
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`, // Add JWT token to Authorization header
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Failed to export report as ${type.toUpperCase()}`);
+      }
+  
+      // Process the response as a blob
+      const blob = await response.blob();
+      const fileName = `leave-usage-report.${type === 'excel' ? 'xlsx' : 'pdf'}`;
+  
+      // Create a downloadable link
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = fileName;
+      document.body.appendChild(link); // Append the link to the DOM
+      link.click(); // Programmatically click the link to trigger the download
+      document.body.removeChild(link); // Remove the link from the DOM
+  
+      setExportMessage(`Report exported successfully as ${type.toUpperCase()}!`);
+    } catch (error) {
+      console.error(`Error exporting report as ${type}:`, error);
+      setExportMessage(`An error occurred while exporting as ${type.toUpperCase()}. Please try again.`);
     }
   };
 
@@ -176,14 +216,32 @@ function AdminDashboard({ onNavigate }) {
           </Col>
 
           <Col md={3}>
-            <Card
-              className="text-center shadow-sm border-0 h-100"
-              onClick={() => onNavigate('reports')}
-              style={{ cursor: 'pointer', backgroundColor: '#e3f2fd' }}
-            >
+            <Card className="text-center shadow-sm border-0 h-100">
               <Card.Body>
                 <div style={{ fontSize: '2rem' }}>📊</div>
                 <Card.Text className="fw-semibold mt-2">View Full Reports</Card.Text>
+                <Button
+                  variant="success"
+                  className="mt-3"
+                  onClick={() => handleExport('excel')}
+                >
+                  Export as Excel
+                </Button>
+                <Button
+                  variant="danger"
+                  className="mt-3"
+                  onClick={() => handleExport('pdf')}
+                >
+                  Export as PDF
+                </Button>
+                {exportMessage && (
+                  <Alert
+                    variant={exportMessage.includes('success') ? 'success' : 'danger'}
+                    className="mt-3"
+                  >
+                    {exportMessage}
+                  </Alert>
+                )}
               </Card.Body>
             </Card>
           </Col>
