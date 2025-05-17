@@ -7,25 +7,45 @@ import {
   Alert,
   Spinner,
 } from 'react-bootstrap';
-import { getDashboardSummary } from '../services/api';
 
 function ManagerDashboard({ onNavigate }) {
   const [summary, setSummary] = useState(null);
+  const [leavesRemaining, setLeavesRemaining] = useState(0);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getDashboardSummary()
-      .then((data) => {
-        if (data) {
-          setSummary(data);
-          setError(false);
-        } else {
-          setError(true);
+    // Fetch leaves remaining
+    const fetchLeavesRemaining = async () => {
+      try {
+        const token = localStorage.getItem('token'); // Retrieve JWT token from localStorage
+
+        const response = await fetch('http://localhost:8080/api/users/leave-balance', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`, // Add JWT token to Authorization header
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch leave balance');
         }
-      })
-      .catch(() => setError(true))
-      .finally(() => setLoading(false));
+
+        const data = await response.json();
+
+        // Calculate total balance by summing up all leave balances
+        const totalBalance = data.reduce((sum, leave) => sum + leave.balance, 0);
+        setLeavesRemaining(totalBalance); // Set the total balance
+      } catch (err) {
+        console.error('Error fetching leave balance:', err);
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLeavesRemaining();
   }, []);
 
   if (loading)
@@ -54,20 +74,9 @@ function ManagerDashboard({ onNavigate }) {
           <Col md={4}>
             <Card className="text-center shadow-sm border-0">
               <Card.Body>
-                <Card.Title className="fw-semibold text-muted">Leaves Applied</Card.Title>
-                <Card.Text className="display-5 fw-bold text-primary">
-                  {summary?.leavesApplied ?? 0}
-                </Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-
-          <Col md={4}>
-            <Card className="text-center shadow-sm border-0">
-              <Card.Body>
                 <Card.Title className="fw-semibold text-muted">Leaves Remaining</Card.Title>
                 <Card.Text className="display-5 fw-bold text-success">
-                  {summary?.leavesRemaining ?? 0}
+                  {leavesRemaining}
                 </Card.Text>
               </Card.Body>
             </Card>
@@ -78,7 +87,7 @@ function ManagerDashboard({ onNavigate }) {
               <Card.Body>
                 <Card.Title className="fw-semibold text-muted">Pending Approvals</Card.Title>
                 <Card.Text className="display-5 fw-bold text-warning">
-                  {summary?.pendingApprovals ?? 0}
+                  {summary?.pendingApprovalsCount ?? 0}
                 </Card.Text>
               </Card.Body>
             </Card>

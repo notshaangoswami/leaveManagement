@@ -6,47 +6,76 @@ import {
   Card,
   Alert,
   Spinner,
+  Button,
 } from 'react-bootstrap';
-import { getDashboardSummary } from '../services/api';
-
-// Mock monthly leave stats - replace with real API data or report generator data
-const mockMonthlyLeaveStats = [
-  { month: 'Jan', leaves: 12 },
-  { month: 'Feb', leaves: 8 },
-  { month: 'Mar', leaves: 15 },
-  { month: 'Apr', leaves: 9 },
-  { month: 'May', leaves: 20 },
-  { month: 'Jun', leaves: 5 },
-  { month: 'Jul', leaves: 18 },
-  { month: 'Aug', leaves: 7 },
-  { month: 'Sep', leaves: 11 },
-  { month: 'Oct', leaves: 14 },
-  { month: 'Nov', leaves: 6 },
-  { month: 'Dec', leaves: 10 },
-];
 
 function AdminDashboard({ onNavigate }) {
   const [summary, setSummary] = useState(null);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [monthlyStats, setMonthlyStats] = useState([]);
+  const [creditMessage, setCreditMessage] = useState('');
 
   useEffect(() => {
-    getDashboardSummary()
-      .then((data) => {
-        if (data) {
-          setSummary(data);
-          setError(false);
-        } else {
-          setError(true);
-        }
-      })
-      .catch(() => setError(true))
-      .finally(() => setLoading(false));
+    const fetchDashboardStats = async () => {
+      try {
+        const token = localStorage.getItem('token'); // Retrieve JWT token from localStorage
 
-    // Simulate fetching monthly stats from report data
-    setMonthlyStats(mockMonthlyLeaveStats);
+        const response = await fetch('http://localhost:8080/api/admin/dashboard-stats', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`, // Add JWT token to Authorization header
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch dashboard stats');
+        }
+
+        const data = await response.json();
+
+        // Update the summary state with totalUsers
+        setSummary((prevSummary) => ({
+          ...prevSummary,
+          totalEmployees: data.totalUsers,
+          totalManagers: data.roleDistribution.MANAGER
+        }));
+
+        setError(false);
+      } catch (err) {
+        console.error('Error fetching dashboard stats:', err);
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDashboardStats();
   }, []);
+
+  const handleCreditLeaves = async () => {
+    setCreditMessage(''); // Clear any previous messages
+    try {
+      const token = localStorage.getItem('token'); // Retrieve JWT token from localStorage
+
+      const response = await fetch('http://localhost:8080/api/admin/credit-leaves', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`, // Add JWT token to Authorization header
+        },
+      });
+
+      if (response.ok) {
+        setCreditMessage('Leaves credited successfully!');
+      } else {
+        setCreditMessage('Failed to credit leaves. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error crediting leaves:', error);
+      setCreditMessage('An error occurred. Please try again.');
+    }
+  };
 
   if (loading)
     return (
@@ -54,15 +83,6 @@ function AdminDashboard({ onNavigate }) {
         <Spinner animation="border" />
       </div>
     );
-
-  // Bar chart dimensions
-  const chartHeight = 150;
-  const chartWidth = 700;
-  const barWidth = 40;
-  const barGap = 15;
-
-  // Max leaves value for scaling
-  const maxLeaves = Math.max(...monthlyStats.map((d) => d.leaves), 10);
 
   return (
     <div style={{ backgroundColor: '#f8f9fa', minHeight: '100vh' }}>
@@ -105,85 +125,69 @@ function AdminDashboard({ onNavigate }) {
 
         {/* Action Buttons */}
         <Row className="g-4 justify-content-center mb-4">
-          {[
-            { label: 'Create Leave Type', emoji: '📄', action: 'create-leave' },
-            { label: 'Credit Leaves', emoji: '➕', action: 'credit-leave' },
-            { label: 'Update Leave Policy', emoji: '⚙️', action: 'update-policy' },
-            { label: 'View Full Reports', emoji: '📊', action: 'reports' },
-          ].map((btn, i) => (
-            <Col md={3} key={i}>
-              <Card
-                className="text-center shadow-sm border-0 h-100"
-                onClick={() => onNavigate(btn.action)}
-                style={{ cursor: 'pointer', backgroundColor: '#e3f2fd' }}
-              >
-                <Card.Body>
-                  <div style={{ fontSize: '2rem' }}>{btn.emoji}</div>
-                  <Card.Text className="fw-semibold mt-2">{btn.label}</Card.Text>
-                </Card.Body>
-              </Card>
-            </Col>
-          ))}
-        </Row>
+          <Col md={3}>
+            <Card
+              className="text-center shadow-sm border-0 h-100"
+              onClick={() => onNavigate('create-leave')}
+              style={{ cursor: 'pointer', backgroundColor: '#e3f2fd' }}
+            >
+              <Card.Body>
+                <div style={{ fontSize: '2rem' }}>📄</div>
+                <Card.Text className="fw-semibold mt-2">Create Leave Type</Card.Text>
+              </Card.Body>
+            </Card>
+          </Col>
 
-        {/* Monthly Leave Stats Bar Chart */}
-        <h5 className="text-center mb-3 text-muted">Monthly Leave Statistics</h5>
-        <svg
-          width={chartWidth}
-          height={chartHeight + 40}
-          style={{ display: 'block', margin: '0 auto' }}
-          role="img"
-          aria-label="Monthly leave statistics bar chart"
-        >
-          {/* Y axis lines and labels */}
-          {[0, 0.25, 0.5, 0.75, 1].map((frac) => {
-            const y = chartHeight - frac * chartHeight;
-            const val = Math.round(frac * maxLeaves);
-            return (
-              <g key={frac}>
-                <line
-                  x1="0"
-                  y1={y}
-                  x2={chartWidth}
-                  y2={y}
-                  stroke="#ddd"
-                  strokeDasharray="2 2"
-                />
-                <text x="-30" y={y + 5} fill="#666" fontSize="10" textAnchor="end">
-                  {val}
-                </text>
-              </g>
-            );
-          })}
-
-          {/* Bars */}
-          {monthlyStats.map((d, i) => {
-            const barHeight = (d.leaves / maxLeaves) * chartHeight;
-            const x = i * (barWidth + barGap) + 40;
-            return (
-              <g key={d.month}>
-                <rect
-                  x={x}
-                  y={chartHeight - barHeight}
-                  width={barWidth}
-                  height={barHeight}
-                  fill="#0d6efd"
-                  rx="4"
-                  ry="4"
-                />
-                <text
-                  x={x + barWidth / 2}
-                  y={chartHeight + 15}
-                  fontSize="12"
-                  fill="#333"
-                  textAnchor="middle"
+          <Col md={3}>
+            <Card className="text-center shadow-sm border-0 h-100">
+              <Card.Body>
+                <div style={{ fontSize: '2rem' }}>➕</div>
+                <Card.Text className="fw-semibold mt-2">Credit Leaves</Card.Text>
+                <Button
+                  variant="primary"
+                  className="mt-3"
+                  onClick={handleCreditLeaves}
                 >
-                  {d.month}
-                </text>
-              </g>
-            );
-          })}
-        </svg>
+                  Credit Leaves
+                </Button>
+                {creditMessage && (
+                  <Alert
+                    variant={creditMessage.includes('success') ? 'success' : 'danger'}
+                    className="mt-3"
+                  >
+                    {creditMessage}
+                  </Alert>
+                )}
+              </Card.Body>
+            </Card>
+          </Col>
+
+          <Col md={3}>
+            <Card
+              className="text-center shadow-sm border-0 h-100"
+              onClick={() => onNavigate('update-policy')}
+              style={{ cursor: 'pointer', backgroundColor: '#e3f2fd' }}
+            >
+              <Card.Body>
+                <div style={{ fontSize: '2rem' }}>⚙️</div>
+                <Card.Text className="fw-semibold mt-2">Update Leave Policy</Card.Text>
+              </Card.Body>
+            </Card>
+          </Col>
+
+          <Col md={3}>
+            <Card
+              className="text-center shadow-sm border-0 h-100"
+              onClick={() => onNavigate('reports')}
+              style={{ cursor: 'pointer', backgroundColor: '#e3f2fd' }}
+            >
+              <Card.Body>
+                <div style={{ fontSize: '2rem' }}>📊</div>
+                <Card.Text className="fw-semibold mt-2">View Full Reports</Card.Text>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
       </Container>
 
       {/* Footer */}
