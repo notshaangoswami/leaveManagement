@@ -9,8 +9,8 @@ import {
 } from 'react-bootstrap';
 
 function ManagerDashboard({ onNavigate }) {
-  const [summary, setSummary] = useState(null);
   const [leavesRemaining, setLeavesRemaining] = useState(0);
+  const [pendingApprovalsCount, setPendingApprovalsCount] = useState(0);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -40,12 +40,41 @@ function ManagerDashboard({ onNavigate }) {
       } catch (err) {
         console.error('Error fetching leave balance:', err);
         setError(true);
-      } finally {
-        setLoading(false);
       }
     };
 
-    fetchLeavesRemaining();
+    // Fetch pending approvals count
+    const fetchPendingApprovalsCount = async () => {
+      try {
+        const token = localStorage.getItem('token'); // Retrieve JWT token from localStorage
+
+        const response = await fetch('http://localhost:8080/api/leave-approvals/pending', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`, // Add JWT token to Authorization header
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch pending approvals');
+        }
+
+        const data = await response.json();
+        setPendingApprovalsCount(data.length); // Set the total count of pending approvals
+      } catch (err) {
+        console.error('Error fetching pending approvals:', err);
+        setError(true);
+      }
+    };
+
+    const fetchData = async () => {
+      setLoading(true);
+      await Promise.all([fetchLeavesRemaining(), fetchPendingApprovalsCount()]);
+      setLoading(false);
+    };
+
+    fetchData();
   }, []);
 
   if (loading)
@@ -87,7 +116,7 @@ function ManagerDashboard({ onNavigate }) {
               <Card.Body>
                 <Card.Title className="fw-semibold text-muted">Pending Approvals</Card.Title>
                 <Card.Text className="display-5 fw-bold text-warning">
-                  {summary?.pendingApprovalsCount ?? 0}
+                  {pendingApprovalsCount}
                 </Card.Text>
               </Card.Body>
             </Card>
