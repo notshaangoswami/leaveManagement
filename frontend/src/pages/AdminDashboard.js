@@ -6,13 +6,16 @@ import {
   Card,
   Alert,
   Spinner,
-  Button, // Button is imported here
+  Button,
+  Modal,
 } from 'react-bootstrap';
+
 function AdminDashboard({ onNavigate }) {
   const [summary, setSummary] = useState(null);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
   const [exportMessage, setExportMessage] = useState('');
+  const [showModal, setShowModal] = useState(false); // State to control the modal visibility
 
   useEffect(() => {
     const fetchDashboardStats = async () => {
@@ -33,12 +36,11 @@ function AdminDashboard({ onNavigate }) {
 
         const data = await response.json();
 
-        // Update the summary state with totalUsers
-        setSummary((prevSummary) => ({
-          ...prevSummary,
+        // Update the summary state with totalUsers and roleDistribution
+        setSummary({
           totalEmployees: data.totalUsers,
           totalManagers: data.roleDistribution.MANAGER,
-        }));
+        });
 
         setError(false);
       } catch (err) {
@@ -91,6 +93,15 @@ function AdminDashboard({ onNavigate }) {
     }
   };
 
+  const handleViewReportsClick = () => {
+    setShowModal(true); // Show the modal when "View Full Reports" is clicked
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false); // Close the modal
+    setExportMessage(''); // Clear any previous export messages
+  };
+
   if (loading)
     return (
       <div className="text-center mt-5">
@@ -114,13 +125,40 @@ function AdminDashboard({ onNavigate }) {
 
         {/* Stats */}
         <Row className="g-4 justify-content-center mb-4">
+          {/* Total Employees Card */}
+          <Col md={4}>
+            <Card className="text-center shadow-sm border-0">
+              <Card.Body>
+                <Card.Title className="fw-semibold text-muted">Total Employees</Card.Title>
+                <Card.Text className="display-5 fw-bold text-primary">
+                  {summary?.totalEmployees || 0}
+                </Card.Text>
+              </Card.Body>
+            </Card>
+          </Col>
+
+          {/* Total Managers Card */}
+          <Col md={4}>
+            <Card className="text-center shadow-sm border-0">
+              <Card.Body>
+                <Card.Title className="fw-semibold text-muted">Total Managers</Card.Title>
+                <Card.Text className="display-5 fw-bold text-success">
+                  {summary?.totalManagers || 0}
+                </Card.Text>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+
+        {/* Other Cards */}
+        <Row className="g-4 justify-content-center mb-5">
           <Col md={3}>
             <Card
               className="text-center shadow-sm border-0 h-100"
               onClick={() => onNavigate('create-leave-policy')}
               style={{ cursor: 'pointer', backgroundColor: '#e3f2fd' }}
             >
-              <Card.Body className="d-flex flex-column justify-content-center align-items-center">
+              <Card.Body>
                 <div style={{ fontSize: '2rem' }}>📄</div>
                 <Card.Text className="fw-semibold mt-2">Create Leave Policy</Card.Text>
               </Card.Body>
@@ -133,7 +171,7 @@ function AdminDashboard({ onNavigate }) {
               onClick={() => onNavigate('leave-policies')} // Navigate to LeavePoliciesPage
               style={{ cursor: 'pointer', backgroundColor: '#e3f2fd' }}
             >
-              <Card.Body className="d-flex flex-column justify-content-center align-items-center">
+              <Card.Body>
                 <div style={{ fontSize: '2rem' }}>➕</div>
                 <Card.Text className="fw-semibold mt-2">Credit Leaves</Card.Text>
               </Card.Body>
@@ -143,48 +181,55 @@ function AdminDashboard({ onNavigate }) {
           <Col md={3}>
             <Card
               className="text-center shadow-sm border-0 h-100"
-              onClick={() => onNavigate('update-policy')}
+              onClick={handleViewReportsClick} // Show modal on click
               style={{ cursor: 'pointer', backgroundColor: '#e3f2fd' }}
             >
-              <Card.Body className="d-flex flex-column justify-content-center align-items-center">
-                <div style={{ fontSize: '2rem' }}>⚙️</div>
-                <Card.Text className="fw-semibold mt-2">Update Leave Policy</Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-
-          <Col md={3}>
-            <Card className="text-center shadow-sm border-0 h-100">
-              <Card.Body className="d-flex flex-column justify-content-center align-items-center">
+              <Card.Body>
                 <div style={{ fontSize: '2rem' }}>📊</div>
                 <Card.Text className="fw-semibold mt-2">View Full Reports</Card.Text>
-                <Button
-                  variant="success"
-                  className="mt-3"
-                  onClick={() => handleExport('excel')}
-                >
-                  Export as Excel
-                </Button>
-                <Button
-                  variant="danger"
-                  className="mt-3"
-                  onClick={() => handleExport('pdf')}
-                >
-                  Export as PDF
-                </Button>
-                {exportMessage && (
-                  <Alert
-                    variant={exportMessage.includes('success') ? 'success' : 'danger'}
-                    className="mt-3"
-                  >
-                    {exportMessage}
-                  </Alert>
-                )}
               </Card.Body>
             </Card>
           </Col>
         </Row>
       </Container>
+
+      {/* Modal for Export Options */}
+      <Modal show={showModal} onHide={handleCloseModal} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Export Reports</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="text-center">
+            <Button
+              variant="success"
+              className="m-2"
+              onClick={() => handleExport('excel')}
+            >
+              Download as Excel
+            </Button>
+            <Button
+              variant="danger"
+              className="m-2"
+              onClick={() => handleExport('pdf')}
+            >
+              Download as PDF
+            </Button>
+          </div>
+          {exportMessage && (
+            <Alert
+              variant={exportMessage.includes('success') ? 'success' : 'danger'}
+              className="mt-3"
+            >
+              {exportMessage}
+            </Alert>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
 
       {/* Footer */}
       <div

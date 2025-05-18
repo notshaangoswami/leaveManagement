@@ -14,6 +14,8 @@ import ForgotPasswordPage from '../pages/ForgotPasswordPage';
 import RegistrationPage from '../pages/RegistrationPage';
 import NotificationsPage from '../components/NotificationsPage'; // Import the NotificationsPage component
 import LeavePoliciesPage from '../pages/LeavePoliciesPage'; // Import the LeavePoliciesPage component
+import LeaveEligibilityPage from '../components/LeaveEligibility';
+
 
 
 
@@ -53,6 +55,7 @@ const AppRouter = ({ userRole, onLoginSuccess, onLogout }) => {
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
       <Route path="/register" element={<RegistrationPage />} />
       <Route path="/leave-policies" element={<LeavePoliciesPage />} />
+      <Route path="/leave-eligibility" element={<LeaveEligibilityPage />} />
       <Route path="*" element={<Navigate to={userRole ? '/dashboard' : '/login'} />} />
     </Routes>
   );

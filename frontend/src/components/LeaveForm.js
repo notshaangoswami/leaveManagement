@@ -116,20 +116,12 @@ export default function LeaveForm() {
         </Form.Group>
 
         <Form.Group controlId="contactPhone" className="mb-3">
-          <Form.Label>Contact Phone</Form.Label>
+          <Form.Label>Superior Email-id</Form.Label>
           <Form.Control
             type="tel"
             value={contactPhone}
             onChange={(e) => setContactPhone(e.target.value)}
             required
-          />
-        </Form.Group>
-
-        <Form.Group controlId="attachmentPath" className="mb-3">
-          <Form.Label>Attachment (Optional)</Form.Label>
-          <Form.Control
-            type="file"
-            onChange={(e) => setAttachmentPath(e.target.files[0])}
           />
         </Form.Group>
 

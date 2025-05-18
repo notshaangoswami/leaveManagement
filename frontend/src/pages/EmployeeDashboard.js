@@ -167,6 +167,19 @@ function EmployeeDashboard({ onNavigate }) {
               </Card.Body>
             </Card>
           </Col>
+
+          <Col md={3}>
+            <Card
+              className="text-center shadow-sm border-0 h-100"
+              onClick={() => onNavigate('leave-eligibility')} // Navigate to LeaveEligibilityPage
+              style={{ cursor: 'pointer', backgroundColor: '#e3f2fd' }}
+            >
+              <Card.Body>
+                <div style={{ fontSize: '2rem' }}>📋</div>
+                <Card.Text className="fw-semibold mt-2">View Eligibility</Card.Text>
+              </Card.Body>
+            </Card>
+          </Col>
         </Row>
       </Container>
 
