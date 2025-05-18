@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Table, Badge, Spinner, Alert } from 'react-bootstrap';
+import { Container, Table, Badge, Spinner, Alert, Button } from 'react-bootstrap';
 
 function LeaveHistory() {
   const [leaveData, setLeaveData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [actionMessage, setActionMessage] = useState('');
 
   useEffect(() => {
     const fetchLeaveHistory = async () => {
@@ -45,8 +46,41 @@ function LeaveHistory() {
         return 'danger';
       case 'PENDING':
         return 'warning';
+      case 'WITHDRAWN':
+        return 'secondary';
       default:
         return 'secondary';
+    }
+  };
+
+  const handleWithdraw = async (id) => {
+    setActionMessage(''); // Clear any previous messages
+    try {
+      const token = localStorage.getItem('token'); // Retrieve the JWT token from localStorage
+
+      const response = await fetch(`http://localhost:8080/api/leave-applications/${id}/withdraw`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`, // Add the JWT token to the Authorization header
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to withdraw leave application');
+      }
+
+      // Update the leave data to reflect the withdrawal
+      setLeaveData((prevData) =>
+        prevData.map((leave) =>
+          leave.id === id ? { ...leave, status: 'WITHDRAWN' } : leave
+        )
+      );
+
+      setActionMessage('Leave application withdrawn successfully!');
+    } catch (err) {
+      console.error('Error withdrawing leave application:', err);
+      setActionMessage('Failed to withdraw leave application. Please try again later.');
     }
   };
 
@@ -65,40 +99,61 @@ function LeaveHistory() {
           {error}
         </Alert>
       ) : (
-        <Table striped bordered hover responsive>
-          <thead>
-            <tr>
-              <th>Leave Type</th>
-              <th>Start Date</th>
-              <th>End Date</th>
-              <th>Applied On</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {leaveData.length === 0 ? (
+        <>
+          {actionMessage && (
+            <Alert
+              variant={actionMessage.includes('successfully') ? 'success' : 'danger'}
+              className="text-center"
+            >
+              {actionMessage}
+            </Alert>
+          )}
+          <Table striped bordered hover responsive>
+            <thead>
               <tr>
-                <td colSpan="4" className="text-center py-4" style={{ color: '#6c757d' }}>
-                  No leave records found.
-                  </td>
+                <th>Leave Type</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Applied On</th>
+                <th>Status</th>
+                <th>Actions</th>
               </tr>
-            ) : (
-              leaveData.map((leave) => (
-                <tr key={leave.id}>
-                  <td>{leave.leaveType}</td>
-                  <td>{leave.startDate}</td>
-                  <td>{leave.endDate}</td>
-                  <td>{new Date(leave.appliedOn).toLocaleDateString()}</td> {/* Format the application date */}
-                  <td>
-                    <Badge bg={getStatusVariant(leave.status)} style={{ fontSize: '1rem' }}>
-                      {leave.status}
-                    </Badge>
+            </thead>
+            <tbody>
+              {leaveData.length === 0 ? (
+                <tr>
+                  <td colSpan="6" className="text-center py-4" style={{ color: '#6c757d' }}>
+                    No leave records found.
                   </td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </Table>
+              ) : (
+                leaveData.map((leave) => (
+                  <tr key={leave.id}>
+                    <td>{leave.leaveType}</td>
+                    <td>{leave.startDate}</td>
+                    <td>{leave.endDate}</td>
+                    <td>{new Date(leave.appliedOn).toLocaleDateString()}</td> {/* Format the application date */}
+                    <td>
+                      <Badge bg={getStatusVariant(leave.status)} style={{ fontSize: '1rem' }}>
+                        {leave.status}
+                      </Badge>
+                    </td>
+                    <td>
+                      <Button
+                        variant="danger"
+                        size="sm"
+                        onClick={() => handleWithdraw(leave.id)}
+                        disabled={leave.status !== 'PENDING'} // Disable the button if the status is not 'PENDING'
+                      >
+                        Withdraw
+                      </Button>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </Table>
+        </>
       )}
     </Container>
   );
