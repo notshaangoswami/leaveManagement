@@ -7,6 +7,8 @@ import Navbar from 'react-bootstrap/Navbar';
 import Button from 'react-bootstrap/Button';
 import { FaBell } from 'react-icons/fa'; // Import bell icon
 import Badge from 'react-bootstrap/Badge'; // Import Badge for the notification count
+import Dropdown from 'react-bootstrap/Dropdown';
+import { VscAccount } from "react-icons/vsc";
 
 function BasicExample({ onLogout }) {
   const navigate = useNavigate();
@@ -83,12 +85,34 @@ function BasicExample({ onLogout }) {
                 {unreadCount}
               </Badge>
             </div>
-            <Button variant="outline-primary" onClick={handleProfileClick}>
-              Profile
-            </Button>
-            <Button variant="outline-danger" onClick={onLogout}>
-              Logout
-            </Button>
+            <Dropdown align="end">
+            <Dropdown.Toggle
+    variant="outline-primary"
+    id="dropdown-basic"
+    style={{
+      padding: 0,
+      border: 'none',
+      background: 'none',
+      borderRadius: '50%', // Make the toggle circular
+      width: '40px', // Set a fixed width
+      height: '40px', // Set a fixed height
+      display: 'flex', // Center the icon
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}
+  >
+    <VscAccount
+      size={30} // Adjust the size of the icon
+      style={{
+        color: '#007bff', // Set the color of the icon
+      }}
+    />
+  </Dropdown.Toggle>
+              <Dropdown.Menu>
+                <Dropdown.Item onClick={handleProfileClick}>Profile</Dropdown.Item>
+                <Dropdown.Item onClick={onLogout}>Logout</Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
           </div>
         </Navbar.Collapse>
       </Container>
