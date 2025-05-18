@@ -1,47 +1,47 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import AppRouter from './router/AppRouter';
 
 function App() {
   const [userRole, setUserRole] = useState(null);
-  const [isLoading, setIsLoading] = useState(true); // Add loading state
+  const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
   const handleLoginSuccess = (role) => {
-    console.log('User role after login:', role); // Debugging
-    localStorage.setItem('userRole', JSON.stringify(role)); // Persist the role
+    console.log('User role after login:', role);
+    localStorage.setItem('userRole', JSON.stringify(role));
     setUserRole(role);
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('userRole'); // Clear the persisted role
+    localStorage.removeItem('userRole');
     setUserRole(null);
+    navigate('/login');
   };
 
   useEffect(() => {
     const storedRole = localStorage.getItem('userRole');
     if (storedRole) {
-      setUserRole(JSON.parse(storedRole)); // Restore the role from localStorage
+      setUserRole(JSON.parse(storedRole));
     }
-    setIsLoading(false); // Mark loading as complete
+    setIsLoading(false);
   }, []);
 
   const ShowNavbar = () => {
     const location = useLocation();
-    // Show Navbar only if userRole is set and the current route is not "/login"
     return userRole && location.pathname !== '/login' ? <Navbar onLogout={handleLogout} /> : null;
   };
 
   if (isLoading) {
-    // Show a loading spinner or placeholder while restoring userRole
     return <div>Loading...</div>;
   }
 
   return (
-    <Router>
+    <>
       <ShowNavbar />
-      <AppRouter userRole={userRole} onLoginSuccess={handleLoginSuccess} />
-    </Router>
+      <AppRouter userRole={userRole} onLoginSuccess={handleLoginSuccess} onLogout={handleLogout} />
+    </>
   );
 }
 

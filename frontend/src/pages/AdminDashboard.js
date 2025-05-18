@@ -6,14 +6,12 @@ import {
   Card,
   Alert,
   Spinner,
-  Button,
+  Button, // Button is imported here
 } from 'react-bootstrap';
-
 function AdminDashboard({ onNavigate }) {
   const [summary, setSummary] = useState(null);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [creditMessage, setCreditMessage] = useState('');
   const [exportMessage, setExportMessage] = useState('');
 
   useEffect(() => {
@@ -39,7 +37,7 @@ function AdminDashboard({ onNavigate }) {
         setSummary((prevSummary) => ({
           ...prevSummary,
           totalEmployees: data.totalUsers,
-          totalManagers: data.roleDistribution.MANAGER
+          totalManagers: data.roleDistribution.MANAGER,
         }));
 
         setError(false);
@@ -54,30 +52,6 @@ function AdminDashboard({ onNavigate }) {
     fetchDashboardStats();
   }, []);
 
-  const handleCreditLeaves = async () => {
-    setCreditMessage(''); // Clear any previous messages
-    try {
-      const token = localStorage.getItem('token'); // Retrieve JWT token from localStorage
-
-      const response = await fetch('http://localhost:8080/api/admin/credit-leaves', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`, // Add JWT token to Authorization header
-        },
-      });
-
-      if (response.ok) {
-        setCreditMessage('Leaves credited successfully!');
-      } else {
-        setCreditMessage('Failed to credit leaves. Please try again.');
-      }
-    } catch (error) {
-      console.error('Error crediting leaves:', error);
-      setCreditMessage('An error occurred. Please try again.');
-    }
-  };
-
   const handleExport = async (type) => {
     setExportMessage(''); // Clear any previous messages
     try {
@@ -86,22 +60,22 @@ function AdminDashboard({ onNavigate }) {
         type === 'excel'
           ? 'http://localhost:8080/api/reports/leave-usage/export/excel'
           : 'http://localhost:8080/api/reports/leave-usage/export/pdf';
-  
+
       const response = await fetch(url, {
         method: 'GET',
         headers: {
-          'Authorization': `Bearer ${token}`, // Add JWT token to Authorization header
+          Authorization: `Bearer ${token}`, // Add JWT token to Authorization header
         },
       });
-  
+
       if (!response.ok) {
         throw new Error(`Failed to export report as ${type.toUpperCase()}`);
       }
-  
+
       // Process the response as a blob
       const blob = await response.blob();
       const fileName = `leave-usage-report.${type === 'excel' ? 'xlsx' : 'pdf'}`;
-  
+
       // Create a downloadable link
       const link = document.createElement('a');
       link.href = window.URL.createObjectURL(blob);
@@ -109,7 +83,7 @@ function AdminDashboard({ onNavigate }) {
       document.body.appendChild(link); // Append the link to the DOM
       link.click(); // Programmatically click the link to trigger the download
       document.body.removeChild(link); // Remove the link from the DOM
-  
+
       setExportMessage(`Report exported successfully as ${type.toUpperCase()}!`);
     } catch (error) {
       console.error(`Error exporting report as ${type}:`, error);
@@ -140,64 +114,28 @@ function AdminDashboard({ onNavigate }) {
 
         {/* Stats */}
         <Row className="g-4 justify-content-center mb-4">
-          <Col md={5}>
-            <Card className="text-center shadow-sm border-0">
-              <Card.Body>
-                <Card.Title className="fw-semibold text-muted">Total Employees</Card.Title>
-                <Card.Text className="display-5 fw-bold text-primary">
-                  {summary?.totalEmployees ?? 0}
-                </Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-
-          <Col md={5}>
-            <Card className="text-center shadow-sm border-0">
-              <Card.Body>
-                <Card.Title className="fw-semibold text-muted">Total Managers</Card.Title>
-                <Card.Text className="display-5 fw-bold text-secondary">
-                  {summary?.totalManagers ?? 0}
-                </Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-
-        {/* Action Buttons */}
-        <Row className="g-4 justify-content-center mb-4">
           <Col md={3}>
             <Card
               className="text-center shadow-sm border-0 h-100"
-              onClick={() => onNavigate('create-leave')}
+              onClick={() => onNavigate('create-leave-policy')}
               style={{ cursor: 'pointer', backgroundColor: '#e3f2fd' }}
             >
-              <Card.Body>
+              <Card.Body className="d-flex flex-column justify-content-center align-items-center">
                 <div style={{ fontSize: '2rem' }}>📄</div>
-                <Card.Text className="fw-semibold mt-2">Create Leave Type</Card.Text>
+                <Card.Text className="fw-semibold mt-2">Create Leave Policy</Card.Text>
               </Card.Body>
             </Card>
           </Col>
 
           <Col md={3}>
-            <Card className="text-center shadow-sm border-0 h-100">
-              <Card.Body>
+            <Card
+              className="text-center shadow-sm border-0 h-100"
+              onClick={() => onNavigate('leave-policies')} // Navigate to LeavePoliciesPage
+              style={{ cursor: 'pointer', backgroundColor: '#e3f2fd' }}
+            >
+              <Card.Body className="d-flex flex-column justify-content-center align-items-center">
                 <div style={{ fontSize: '2rem' }}>➕</div>
                 <Card.Text className="fw-semibold mt-2">Credit Leaves</Card.Text>
-                <Button
-                  variant="primary"
-                  className="mt-3"
-                  onClick={handleCreditLeaves}
-                >
-                  Credit Leaves
-                </Button>
-                {creditMessage && (
-                  <Alert
-                    variant={creditMessage.includes('success') ? 'success' : 'danger'}
-                    className="mt-3"
-                  >
-                    {creditMessage}
-                  </Alert>
-                )}
               </Card.Body>
             </Card>
           </Col>
@@ -208,7 +146,7 @@ function AdminDashboard({ onNavigate }) {
               onClick={() => onNavigate('update-policy')}
               style={{ cursor: 'pointer', backgroundColor: '#e3f2fd' }}
             >
-              <Card.Body>
+              <Card.Body className="d-flex flex-column justify-content-center align-items-center">
                 <div style={{ fontSize: '2rem' }}>⚙️</div>
                 <Card.Text className="fw-semibold mt-2">Update Leave Policy</Card.Text>
               </Card.Body>
@@ -217,7 +155,7 @@ function AdminDashboard({ onNavigate }) {
 
           <Col md={3}>
             <Card className="text-center shadow-sm border-0 h-100">
-              <Card.Body>
+              <Card.Body className="d-flex flex-column justify-content-center align-items-center">
                 <div style={{ fontSize: '2rem' }}>📊</div>
                 <Card.Text className="fw-semibold mt-2">View Full Reports</Card.Text>
                 <Button

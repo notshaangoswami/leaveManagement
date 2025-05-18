@@ -1,32 +1,95 @@
+// Navbar.js
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import Button from 'react-bootstrap/Button'; // Import Button
+import Button from 'react-bootstrap/Button';
+import { FaBell } from 'react-icons/fa'; // Import bell icon
+import Badge from 'react-bootstrap/Badge'; // Import Badge for the notification count
 
-function BasicExample({ onLogout }) { // Destructure the prop properly
+function BasicExample({ onLogout }) {
+  const navigate = useNavigate();
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  // Fetch unread notification count
+  useEffect(() => {
+    const fetchUnreadCount = async () => {
+      try {
+        const token = localStorage.getItem('token'); // Retrieve JWT token from localStorage
+        if (!token) {
+          console.error('No token found in localStorage');
+          return;
+        }
+
+        const response = await fetch('http://localhost:8080/api/notifications/unread-count', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`, // Add JWT token to Authorization header
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch unread notification count');
+        }
+
+        const count = await response.json(); // Directly parse the number
+        setUnreadCount(count); // Set the count directly
+      } catch (error) {
+        console.error('Error fetching unread notification count:', error);
+      }
+    };
+
+    fetchUnreadCount();
+
+    // Optionally, poll for new notifications every 30 seconds
+    const interval = setInterval(fetchUnreadCount, 30000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleProfileClick = () => {
+    navigate('/profile');
+  };
+
+  const handleNotificationsClick = () => {
+    navigate('/notifications'); // Navigate to the notifications page
+  };
+
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container>
-        <Navbar.Brand href="#home">Leave Scheduler</Navbar.Brand>
+        <Navbar.Brand href="/dashboard">Leave Scheduler</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#link">Link</Nav.Link>
-            <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">
-                Another action
-              </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">
-                Separated link
-              </NavDropdown.Item>
-            </NavDropdown>
-          </Nav>
-          <Button variant="outline-danger" onClick={onLogout}>Logout</Button> {/* Logout button */}
+          <Nav className="me-auto"></Nav>
+          <div className="d-flex gap-3 align-items-center">
+            {/* Bell Icon with Unread Count */}
+            <div
+              style={{ position: 'relative', cursor: 'pointer' }}
+              onClick={handleNotificationsClick}
+            >
+              <FaBell size={20} />
+              <Badge
+                bg={unreadCount > 0 ? 'danger' : 'secondary'} // Use 'danger' for >0, 'secondary' for 0
+                pill
+                style={{
+                  position: 'absolute',
+                  top: '-5px',
+                  right: '-10px',
+                  fontSize: '0.75rem',
+                }}
+              >
+                {unreadCount}
+              </Badge>
+            </div>
+            <Button variant="outline-primary" onClick={handleProfileClick}>
+              Profile
+            </Button>
+            <Button variant="outline-danger" onClick={onLogout}>
+              Logout
+            </Button>
+          </div>
         </Navbar.Collapse>
       </Container>
     </Navbar>

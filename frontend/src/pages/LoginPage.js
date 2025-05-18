@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom'; // Import Link
 
 export default function LoginPage({ onLoginSuccess }) {
   const [username, setUsername] = useState('');
@@ -95,6 +95,20 @@ export default function LoginPage({ onLoginSuccess }) {
             Login
           </button>
         </form>
+
+        <div className="text-center mt-3">
+          <p className="mb-0">
+            Don't have an account?{' '}
+            <Link to="/register" className="text-primary fw-semibold">
+              Register here
+            </Link>
+          </p>
+          <p className="mt-2">
+    <Link to="/forgot-password" className="text-primary fw-semibold">
+      Forgot Password?
+    </Link>
+  </p>
+        </div>
       </div>
     </div>
   );
