@@ -58,6 +58,10 @@ function BasicExample({ onLogout }) {
     navigate('/notifications'); // Navigate to the notifications page
   };
 
+  const handleChangePasswordClick = () => {
+      navigate('/change-password');
+  };
+
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container>
@@ -86,32 +90,31 @@ function BasicExample({ onLogout }) {
               </Badge>
             </div>
             <Dropdown align="end">
-            <Dropdown.Toggle
-    variant="outline-primary"
-    id="dropdown-basic"
-    style={{
-      padding: 0,
-      border: 'none',
-      background: 'none',
-      borderRadius: '50%', // Make the toggle circular
-      width: '40px', // Set a fixed width
-      height: '40px', // Set a fixed height
-      display: 'flex', // Center the icon
-      alignItems: 'center',
-      justifyContent: 'center',
-    }}
-  >
-    <VscAccount
-      size={30} // Adjust the size of the icon
-      style={{
-        color: '#007bff', // Set the color of the icon
-      }}
-    />
-  </Dropdown.Toggle>
+                <Dropdown.Toggle
+                    variant="outline-primary"
+                    id="dropdown-basic"
+                    style={{
+                      padding: 0,
+                      border: 'none',
+                      background: 'none',
+                      borderRadius: '50%', // Make the toggle circular
+                      width: '40px', // Set a fixed width
+                      height: '40px', // Set a fixed height
+                      display: 'flex', // Center the icon
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}>
+                    <VscAccount
+                      size={30} // Adjust the size of the icon
+                      style={{
+                        color: '#007bff', // Set the color of the icon
+                      }}
+                    />
+                </Dropdown.Toggle>
               <Dropdown.Menu>
                 <Dropdown.Item onClick={handleProfileClick}>Profile</Dropdown.Item>
                 <Dropdown.Item onClick={onLogout}>Logout</Dropdown.Item>
-                <Dropdown.Item>Reset Password</Dropdown.Item>
+                <Dropdown.Item onClick={handleChangePasswordClick} >Change Password</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           </div>
