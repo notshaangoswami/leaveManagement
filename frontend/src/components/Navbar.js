@@ -58,6 +58,10 @@ function BasicExample({ onLogout }) {
     navigate('/notifications'); // Navigate to the notifications page
   };
 
+  const handleChangePasswordClick = () => {
+    navigate('/change-password');
+  };
+
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container>
@@ -111,7 +115,7 @@ function BasicExample({ onLogout }) {
               <Dropdown.Menu>
                 <Dropdown.Item onClick={handleProfileClick}>Profile</Dropdown.Item>
                 <Dropdown.Item onClick={onLogout}>Logout</Dropdown.Item>
-                <Dropdown.Item>Reset Password</Dropdown.Item>
+                <Dropdown.Item onClick={handleChangePasswordClick}>Change Password</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           </div>

@@ -21,6 +21,7 @@ import LeaveEligibilityPage from '../components/LeaveEligibility';
 
 
 import { useNavigate } from 'react-router-dom';
+import ChangePassword from "../components/ChangePassword";
 
 const AppRouter = ({ userRole, onLoginSuccess, onLogout }) => {
   console.log('AppRouter received userRole:', userRole); // Debugging
@@ -56,6 +57,7 @@ const AppRouter = ({ userRole, onLoginSuccess, onLogout }) => {
       <Route path="/register" element={<RegistrationPage />} />
       <Route path="/leave-policies" element={<LeavePoliciesPage />} />
       <Route path="/leave-eligibility" element={<LeaveEligibilityPage />} />
+        <Route path="/change-password" element={<ChangePassword />} />
       <Route path="*" element={<Navigate to={userRole ? '/dashboard' : '/login'} />} />
     </Routes>
   );

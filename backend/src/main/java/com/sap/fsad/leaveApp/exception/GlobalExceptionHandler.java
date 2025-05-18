@@ -81,16 +81,24 @@ public class GlobalExceptionHandler {
     public ResponseEntity<CustomErrorResponse> handleValidationExceptions(MethodArgumentNotValidException ex,
             WebRequest request) {
         logger.error("Validation Exception: {}", ex.getMessage());
-        String errors = ex.getBindingResult()
-                .getAllErrors()
-                .stream()
-                .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                .collect(Collectors.joining(", "));
+//        String errors = ex.getBindingResult()
+//                .getAllErrors()
+//                .stream()
+//                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+//                .collect(Collectors.joining(", "));
+//
+//        CustomErrorResponse errorResponse = new CustomErrorResponse(
+//                LocalDateTime.now(),
+//                "Validation failed: {}" + errors,
+//                request.getDescription(false));
+
+        String simplifiedMessage = "New password must be between 6 and 100 characters.";
 
         CustomErrorResponse errorResponse = new CustomErrorResponse(
                 LocalDateTime.now(),
-                "Validation failed: {}" + errors,
+                "Validation failed: " + simplifiedMessage,
                 request.getDescription(false));
+
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
