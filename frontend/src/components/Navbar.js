@@ -111,6 +111,7 @@ function BasicExample({ onLogout }) {
               <Dropdown.Menu>
                 <Dropdown.Item onClick={handleProfileClick}>Profile</Dropdown.Item>
                 <Dropdown.Item onClick={onLogout}>Logout</Dropdown.Item>
+                <Dropdown.Item>Reset Password</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           </div>
