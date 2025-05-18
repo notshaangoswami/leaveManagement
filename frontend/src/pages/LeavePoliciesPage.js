@@ -126,23 +126,29 @@ function LeavePoliciesPage() {
     e.preventDefault();
     setIsSubmitting(true);
     setActionMessage('');
-
+  
     try {
       const token = localStorage.getItem('token'); // Retrieve the JWT token from localStorage
-
-      const response = await fetch(`http://localhost:8080/api/admin/leave-policies/${selectedPolicy.id}`, {
-        method: 'PUT',
+  
+      // Include the `id` in the request body
+      const requestBody = {
+        ...selectedPolicy,
+        id: selectedPolicy.id, // Ensure the `id` is part of the body
+      };
+  
+      const response = await fetch('http://localhost:8080/api/admin/leave-policies', {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`, // Add the JWT token to the Authorization header
         },
-        body: JSON.stringify(selectedPolicy),
+        body: JSON.stringify(requestBody), // Send the updated policy data with `id` in the body
       });
-
+  
       if (!response.ok) {
         throw new Error('Failed to update leave policy');
       }
-
+  
       setActionMessage('Leave policy updated successfully!');
       setSelectedPolicy(null); // Clear the form after successful update
       setLeavePolicies((prevPolicies) =>
@@ -157,7 +163,6 @@ function LeavePoliciesPage() {
       setIsSubmitting(false);
     }
   };
-
   const handleCancelUpdate = () => {
     setSelectedPolicy(null); // Clear the selected policy and hide the form
   };
