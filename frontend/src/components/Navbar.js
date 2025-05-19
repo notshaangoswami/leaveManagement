@@ -8,11 +8,14 @@ import Button from 'react-bootstrap/Button';
 import { FaBell } from 'react-icons/fa'; // Import bell icon
 import Badge from 'react-bootstrap/Badge'; // Import Badge for the notification count
 import Dropdown from 'react-bootstrap/Dropdown';
+import Modal from 'react-bootstrap/Modal'; // Import Modal for the logout confirmation
 import { VscAccount } from "react-icons/vsc";
 
 function BasicExample({ onLogout }) {
   const navigate = useNavigate();
   const [unreadCount, setUnreadCount] = useState(0);
+  const [showLogoutModal, setShowLogoutModal] = useState(false); // State for modal visibility
+
 
   // Fetch unread notification count
   useEffect(() => {
@@ -61,8 +64,21 @@ function BasicExample({ onLogout }) {
   const handleChangePasswordClick = () => {
     navigate('/change-password');
   };
+  const handleLogoutClick = () => {
+    setShowLogoutModal(true); // Show the confirmation modal
+  };
+
+  const handleConfirmLogout = () => {
+    setShowLogoutModal(false); // Close the modal
+    onLogout(); // Call the logout function
+  };
+
+  const handleCancelLogout = () => {
+    setShowLogoutModal(false); // Close the modal without logging out
+  };
 
   return (
+    <>
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container>
         <Navbar.Brand href="/dashboard">Leave Scheduler</Navbar.Brand>
@@ -114,7 +130,7 @@ function BasicExample({ onLogout }) {
   </Dropdown.Toggle>
               <Dropdown.Menu>
                 <Dropdown.Item onClick={handleProfileClick}>Profile</Dropdown.Item>
-                <Dropdown.Item onClick={onLogout}>Logout</Dropdown.Item>
+                <Dropdown.Item onClick={handleLogoutClick}>Logout</Dropdown.Item>
                 <Dropdown.Item onClick={handleChangePasswordClick}>Change Password</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
@@ -122,6 +138,30 @@ function BasicExample({ onLogout }) {
         </Navbar.Collapse>
       </Container>
     </Navbar>
+     {/* Logout Confirmation Modal */}
+     <Modal show={showLogoutModal} onHide={handleCancelLogout} centered>
+     <Modal.Header closeButton>
+       <Modal.Title>Confirm Logout</Modal.Title>
+     </Modal.Header>
+     <Modal.Body>Are you sure you want to log out?</Modal.Body>
+     <Modal.Footer>
+     <Button
+      variant="info" // Change to light blue
+      style={{ backgroundColor: '#add8e6', borderColor: '#add8e6' }} // Custom light blue color
+      onClick={handleCancelLogout}
+    >
+      Cancel
+    </Button>
+    <Button
+      variant="info" // Change to light blue
+      style={{ backgroundColor: '#add8e6', borderColor: '#add8e6' }} // Custom light blue color
+      onClick={handleConfirmLogout}
+    >
+      Logout
+    </Button>
+     </Modal.Footer>
+   </Modal>
+  </> 
   );
 }
 
