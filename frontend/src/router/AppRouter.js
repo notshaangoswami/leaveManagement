@@ -3,7 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import EmployeeDashboard from '../pages/EmployeeDashboard';
 import ManagerDashboard from '../pages/ManagerDashboard';
 import AdminDashboard from '../pages/AdminDashboard';
-import ReportsPage from '../pages/ReportsPage';
+// import ReportsPage from '../pages/ReportsPage';
 import LoginPage from '../pages/LoginPage';
 import LeaveForm from '../components/LeaveForm';
 import LeaveHistory from '../components/LeaveHistory';
@@ -15,6 +15,8 @@ import RegistrationPage from '../pages/RegistrationPage';
 import NotificationsPage from '../components/NotificationsPage'; // Import the NotificationsPage component
 import LeavePoliciesPage from '../pages/LeavePoliciesPage'; // Import the LeavePoliciesPage component
 import LeaveEligibilityPage from '../components/LeaveEligibility';
+import ResetPasswordPage from '../components/ResetPassword';
+
 
 
 
@@ -57,7 +59,8 @@ const AppRouter = ({ userRole, onLoginSuccess, onLogout }) => {
       <Route path="/register" element={<RegistrationPage />} />
       <Route path="/leave-policies" element={<LeavePoliciesPage />} />
       <Route path="/leave-eligibility" element={<LeaveEligibilityPage />} />
-        <Route path="/change-password" element={<ChangePassword />} />
+      <Route path="/change-password" element={<ChangePassword />} />
+      <Route path="/reset-password" element={<ResetPasswordPage />} />
       <Route path="*" element={<Navigate to={userRole ? '/dashboard' : '/login'} />} />
     </Routes>
   );

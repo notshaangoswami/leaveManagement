@@ -1,46 +1,37 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
-export default function ForgotPasswordPage() {
-  const [email, setEmail] = useState('');
+export default function ResetPasswordPage() {
+  const [token, setToken] = useState('');
+  const [newPassword, setNewPassword] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isResetEnabled, setIsResetEnabled] = useState(false); // Tracks if the Reset Password button should be enabled
-  const navigate = useNavigate(); // Hook for navigation
 
-  const handleForgotPassword = async (e) => {
+  const handleResetPassword = async (e) => {
     e.preventDefault();
     setMessage('');
     setError('');
     setIsSubmitting(true);
 
     try {
-      const response = await fetch(
-        `http://localhost:8080/api/auth/forgot-password?email=${encodeURIComponent(email)}`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
+      const response = await fetch('http://localhost:8080/api/auth/reset-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token, newPassword }),
+      });
 
       if (!response.ok) {
-        throw new Error('Failed to send password reset email');
+        throw new Error('Failed to reset password');
       }
 
-      setMessage('Password reset email sent successfully!');
-      setIsResetEnabled(true); // Enable the Reset Password button
+      setMessage('Password reset successfully!');
     } catch (err) {
       setError(err.message);
     } finally {
       setIsSubmitting(false);
     }
-  };
-
-  const handleResetPasswordRedirect = () => {
-    navigate('/reset-password'); // Redirect to ResetPasswordPage
   };
 
   return (
@@ -61,7 +52,7 @@ export default function ForgotPasswordPage() {
           borderRadius: '8px',
         }}
       >
-        <h2 className="text-center text-primary mb-4">Forgot Password</h2>
+        <h2 className="text-center text-primary mb-4">Reset Password</h2>
 
         {message && (
           <div className="alert alert-success text-center mb-3" role="alert">
@@ -75,18 +66,33 @@ export default function ForgotPasswordPage() {
           </div>
         )}
 
-        <form onSubmit={handleForgotPassword}>
+        <form onSubmit={handleResetPassword}>
           <div className="mb-4">
-            <label htmlFor="email" className="form-label fw-semibold">
-              Email Address
+            <label htmlFor="token" className="form-label fw-semibold">
+              Token
             </label>
             <input
-              type="email"
-              id="email"
+              type="text"
+              id="token"
               className="form-control"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
+              value={token}
+              onChange={(e) => setToken(e.target.value)}
+              placeholder="Enter the reset token"
+              required
+            />
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="newPassword" className="form-label fw-semibold">
+              New Password
+            </label>
+            <input
+              type="password"
+              id="newPassword"
+              className="form-control"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              placeholder="Enter your new password"
               required
             />
           </div>
@@ -96,19 +102,9 @@ export default function ForgotPasswordPage() {
             className="btn btn-primary w-100 fw-semibold"
             disabled={isSubmitting}
           >
-            {isSubmitting ? 'Sending...' : 'Send Reset Link'}
+            {isSubmitting ? 'Resetting...' : 'Reset Password'}
           </button>
         </form>
-
-        <div className="text-center mt-3">
-          <button
-            className="btn btn-secondary w-100 fw-semibold"
-            onClick={handleResetPasswordRedirect}
-            disabled={!isResetEnabled} // Disable the button until the API call is successful
-          >
-            Reset Password
-          </button>
-        </div>
 
         <div className="text-center mt-3">
           <p className="mb-0">
