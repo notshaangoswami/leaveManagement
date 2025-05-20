@@ -7,6 +7,7 @@ import {
   Alert,
   Spinner,
 } from 'react-bootstrap';
+import HolidayCalendar from "../components/HolidayCalendar";
 
 function EmployeeDashboard({ onNavigate }) {
   const [summary, setSummary] = useState({ leavesApplied: 0, leavesRemaining: 0 });
@@ -182,6 +183,8 @@ function EmployeeDashboard({ onNavigate }) {
           </Col>
         </Row>
       </Container>
+
+      <HolidayCalendar/>
 
       {/* Footer */}
       <div

@@ -9,6 +9,7 @@ import {
   Button,
   Modal,
 } from 'react-bootstrap';
+import HolidayCalendar from "../components/HolidayCalendar";
 
 function AdminDashboard({ onNavigate }) {
   const [summary, setSummary] = useState(null);
@@ -230,6 +231,8 @@ function AdminDashboard({ onNavigate }) {
           </Button>
         </Modal.Footer>
       </Modal>
+
+      <HolidayCalendar />
 
       {/* Footer */}
       <div

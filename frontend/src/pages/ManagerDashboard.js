@@ -7,6 +7,7 @@ import {
   Alert,
   Spinner,
 } from 'react-bootstrap';
+import HolidayCalendar from "../components/HolidayCalendar";
 
 function ManagerDashboard({ onNavigate }) {
   const [leavesRemaining, setLeavesRemaining] = useState(0);
@@ -179,6 +180,7 @@ function ManagerDashboard({ onNavigate }) {
         </Row>
       </Container>
 
+      <HolidayCalendar />
       {/* Footer */}
       <div
         style={{
