@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom'; // Import Link
+import bgImage from '../assets/background-login.jpg';
+import '../css/LoginPage.css';
 
 export default function LoginPage({ onLoginSuccess }) {
   const [username, setUsername] = useState('');
@@ -40,18 +42,34 @@ export default function LoginPage({ onLoginSuccess }) {
         justifyContent: 'center',
         alignItems: 'center',
         minHeight: '100vh',
-        backgroundColor: '#f8f9fa',
+        backgroundImage: `url(${bgImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
       }}
     >
       <div
         className="card shadow-sm p-4"
         style={{
           width: '400px',
-          backgroundColor: 'white',
+          backgroundColor: 'rgba(255, 255, 255, 0.85)',
           borderRadius: '8px',
+          boxShadow: '0 0 10px rgba(0,0,0,0.3)',
         }}
       >
-        <h2 className="text-center text-primary mb-4">Login</h2>
+        <h2
+          className="text-center mb-4"
+          style={{
+            fontFamily: "'Quicksand', 'sans-serif'",
+            fontOpticalSizing: 'auto',
+            fontWeight: 700,
+            fontStyle: 'normal',
+            color: '#4D55CC' ,
+          }}
+        >
+          Login
+        </h2>
+
 
         {error && (
           <div className="alert alert-danger text-center mb-3" role="alert">
@@ -90,7 +108,8 @@ export default function LoginPage({ onLoginSuccess }) {
 
           <button
             type="submit"
-            className="btn btn-primary w-100 fw-semibold"
+            className="btn w-100 fw-semibold custom-login-btn"
+            style={{ backgroundColor: '#4D55CC', borderColor: '#4D55CC', color: 'white' }}
           >
             Login
           </button>

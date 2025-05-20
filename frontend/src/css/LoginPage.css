@@ -1,0 +1,13 @@
+.custom-login-btn {
+    background-color: #4D55CC;
+    border-color: #4D55CC;
+    color: white;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+  }
+  
+.custom-login-btn:hover {
+    background-color: #373ea1 !important;
+    border-color: #373ea1;
+    cursor: pointer;
+  }
+  

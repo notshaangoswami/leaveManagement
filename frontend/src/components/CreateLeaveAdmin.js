@@ -75,12 +75,14 @@ function CreateLeaveAdmin({ show, onHide, onCreated }) {
 
           <Form.Group className="mb-3">
             <Form.Label>Type</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="NATIONAL or ADMIN"
+            <Form.Select
               value={newType}
-              onChange={e => setNewType(e.target.value.toUpperCase())}
-            />
+              onChange={e => setNewType(e.target.value)}
+            >
+              <option value="">-- Select Type --</option>
+              <option value="NATIONAL">NATIONAL</option>
+              <option value="ADMIN">ADMIN</option>
+            </Form.Select>
           </Form.Group>
 
           <Form.Group className="mb-3">
