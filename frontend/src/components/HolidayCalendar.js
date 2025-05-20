@@ -131,13 +131,6 @@ function HolidayCalendar() {
     }
   };
 
-  const handleUpdate = () => {
-    const updatedName = prompt("Enter updated holiday name", selectedHoliday.name);
-    if (updatedName) {
-      updateHoliday({ ...selectedHoliday, name: updatedName });
-    }
-  };
-
   return (
     <div className="calendar-container">
       <h3>Holiday Calendar</h3>
