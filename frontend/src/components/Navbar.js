@@ -10,6 +10,7 @@ import Badge from 'react-bootstrap/Badge'; // Import Badge for the notification 
 import Dropdown from 'react-bootstrap/Dropdown';
 import Modal from 'react-bootstrap/Modal'; // Import Modal for the logout confirmation
 import { VscAccount } from "react-icons/vsc";
+import "../css/Navbar.css";
 
 function BasicExample({ onLogout }) {
   const navigate = useNavigate();
@@ -81,7 +82,15 @@ function BasicExample({ onLogout }) {
     <>
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container>
-        <Navbar.Brand href="/dashboard">Leave Scheduler</Navbar.Brand>
+        <Navbar.Brand href="/dashboard" className="d-flex align-items-center gap-2">
+    <img
+      src="leave.png"
+      alt="Logo"
+      width="50"
+      height="50"
+      className="rounded-circle"
+    />
+    <span className="brand-name">LEAVEit</span></Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto"></Nav>

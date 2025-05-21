@@ -108,7 +108,7 @@ function CreateLeaveAdmin({ show, onHide, onCreated }) {
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={onHide}>Cancel</Button>
-        <Button variant="primary" onClick={handleCreate}>Create Holiday</Button>
+        <Button style={{ backgroundColor: '#6284d5', color: '#fff', border: 'none' }} variant="primary" onClick={handleCreate}>Create Holiday</Button>
       </Modal.Footer>
     </Modal>
   );

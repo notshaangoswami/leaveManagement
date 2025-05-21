@@ -196,7 +196,7 @@ function HolidayCalendar() {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowEditModal(false)}>Cancel</Button>
-          <Button variant="primary" onClick={handleSaveEdit}>Save Changes</Button>
+          <Button variant="primary"  onClick={handleSaveEdit}>Save Changes</Button>
         </Modal.Footer>
       </Modal>
 
@@ -204,7 +204,7 @@ function HolidayCalendar() {
       {/* Admin-only Create Holiday Button + Modal */}
       {userRole === 'ADMIN' && (
         <>
-          <Button variant="success" className="mt-3" onClick={() => setShowCreateModal(true)}>
+          <Button variant="success" className="mt-3 addHoliday" onClick={() => setShowCreateModal(true)}>
             + Add New Holiday
           </Button>
           <CreateLeaveAdmin

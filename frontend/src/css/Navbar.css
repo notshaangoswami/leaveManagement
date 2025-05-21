@@ -1,0 +1,49 @@
+/* Custom Navbar Styling */
+.navbar {
+    background-color: #F9F9F9 !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  }
+  
+  .navbar .navbar-brand {
+    font-weight: bold;
+    color: #1E2A38 !important;
+    font-size: 1.6rem;
+  }
+  
+  .navbar .nav-link {
+    color: #1E2A38 !important;
+    font-weight: 500;
+  }
+  
+  .navbar .nav-link:hover {
+    color: #007bff !important; /* Bootstrap primary blue on hover */
+  }
+  
+  .dropdown-menu {
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+  
+  .dropdown-item {
+    font-weight: 500;
+    color: #1E2A38;
+  }
+  
+  .dropdown-item:hover {
+    background-color: #f0f0f0;
+    color: #007bff;
+  }
+  
+  .badge {
+    font-size: 0.65rem;
+  }
+  
+  .modal-content {
+    border-radius: 12px;
+  }
+  
+  .modal-header, .modal-body, .modal-footer {
+    background-color: #ffffff;
+    color: #1E2A38;
+  }
+  
