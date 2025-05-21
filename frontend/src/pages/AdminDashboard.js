@@ -232,12 +232,12 @@ function AdminDashboard({ onNavigate }) {
 
             <Col md={3}>
               <Card
-                className="text-center shadow-sm border-0 card-hover h-100"
+                className="shadow-sm h-100 action-card"
                 onClick={() => onNavigate('leave-policies')} // Navigate to LeavePoliciesPage
                 style={{ cursor: 'pointer', backgroundColor: '#e3f2fd' }}
               >
                 <Card.Body>
-                  <div style={{ fontSize: '2rem' }}>➕</div>
+                  <div className="card-icon">➕</div>
                   <Card.Text className="fw-semibold mt-2">Credit Leaves</Card.Text>
                 </Card.Body>
               </Card>
@@ -245,12 +245,12 @@ function AdminDashboard({ onNavigate }) {
 
             <Col md={3}>
               <Card
-                className="text-center shadow-sm border-0 card-hover h-100"
+                className="shadow-sm h-100 action-card"
                 onClick={handleViewReportsClick} // Show modal on click
                 style={{ cursor: 'pointer', backgroundColor: '#e3f2fd' }}
               >
                 <Card.Body>
-                  <div style={{ fontSize: '2rem' }}>📊</div>
+                  <div className="card-icon">📊</div>
                   <Card.Text className="fw-semibold mt-2">View Full Reports</Card.Text>
                 </Card.Body>
               </Card>
