@@ -1,0 +1,19 @@
+body.dark-mode {
+    background-color: #121212;
+    color: #f0f0f0;
+}
+
+.navbar.dark {
+    background-color: #1e1e1e !important;
+}
+
+.navbar .navbar-brand,
+.navbar .nav-link,
+.dropdown-item {
+    color: #f0f0f0 !important;
+}
+
+.dropdown-item:hover {
+    background-color: #333333;
+    color: #66b2ff;
+}

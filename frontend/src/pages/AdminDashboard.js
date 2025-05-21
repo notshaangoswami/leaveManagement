@@ -175,17 +175,17 @@ function AdminDashboard({ onNavigate }) {
       //   </Container>
       // </div>
 
-      <div className="dashboard-container dashboard-wrapper" >
+      <div className="dashboard-container dashboard-wrapper">
         {/* Header */}
         <div className="dashboard-header">
           <h1 className="text-center dashboard-title">🛠 Admin Dashboard</h1>
         </div>
 
-        <Container className="py-5" style={{ maxWidth: '960px' }}>
+        <Container className="py-5" style={{maxWidth: '960px'}}>
           {error && (
-            <Alert variant="danger" className="text-center mb-4">
-              Failed to load admin dashboard data.
-            </Alert>
+              <Alert variant="danger" className="text-center mb-4">
+                Failed to load admin dashboard data.
+              </Alert>
           )}
 
           {/* Stats */}
@@ -219,9 +219,9 @@ function AdminDashboard({ onNavigate }) {
           <Row className="g-4 justify-content-center dashboard-actions text-center mb-4">
             <Col md={3}>
               <Card
-                className="shadow-sm h-100 action-card"
-                onClick={() => onNavigate('create-leave-policy')}
-                style={{ cursor: 'pointer', backgroundColor: '#e3f2fd' }}
+                  className="shadow-sm h-100 action-card"
+                  onClick={() => onNavigate('create-leave-policy')}
+                  style={{cursor: 'pointer', backgroundColor: '#e3f2fd'}}
               >
                 <Card.Body>
                   <div className="card-icon">📄</div>
@@ -232,9 +232,9 @@ function AdminDashboard({ onNavigate }) {
 
             <Col md={3}>
               <Card
-                className="shadow-sm h-100 action-card"
-                onClick={() => onNavigate('leave-policies')} // Navigate to LeavePoliciesPage
-                style={{ cursor: 'pointer', backgroundColor: '#e3f2fd' }}
+                  className="shadow-sm h-100 action-card"
+                  onClick={() => onNavigate('leave-policies')} // Navigate to LeavePoliciesPage
+                  style={{cursor: 'pointer', backgroundColor: '#e3f2fd'}}
               >
                 <Card.Body>
                   <div className="card-icon">➕</div>
@@ -245,9 +245,9 @@ function AdminDashboard({ onNavigate }) {
 
             <Col md={3}>
               <Card
-                className="shadow-sm h-100 action-card"
-                onClick={handleViewReportsClick} // Show modal on click
-                style={{ cursor: 'pointer', backgroundColor: '#e3f2fd' }}
+                  className="shadow-sm h-100 action-card"
+                  onClick={handleViewReportsClick} // Show modal on click
+                  style={{cursor: 'pointer', backgroundColor: '#e3f2fd'}}
               >
                 <Card.Body>
                   <div className="card-icon">📊</div>
@@ -266,27 +266,27 @@ function AdminDashboard({ onNavigate }) {
           <Modal.Body>
             <div className="text-center">
               <Button
-                variant="success"
-                className="m-2"
-                onClick={() => handleExport('excel')}
+                  variant="success"
+                  className="m-2"
+                  onClick={() => handleExport('excel')}
               >
                 Download as Excel
               </Button>
               <Button
-                variant="danger"
-                className="m-2"
-                onClick={() => handleExport('pdf')}
+                  variant="danger"
+                  className="m-2"
+                  onClick={() => handleExport('pdf')}
               >
                 Download as PDF
               </Button>
             </div>
             {exportMessage && (
-              <Alert
-                variant={exportMessage.includes('success') ? 'success' : 'danger'}
-                className="mt-3"
-              >
-                {exportMessage}
-              </Alert>
+                <Alert
+                    variant={exportMessage.includes('success') ? 'success' : 'danger'}
+                    className="mt-3"
+                >
+                  {exportMessage}
+                </Alert>
             )}
           </Modal.Body>
           <Modal.Footer>
@@ -296,10 +296,10 @@ function AdminDashboard({ onNavigate }) {
           </Modal.Footer>
         </Modal>
 
-        <HolidayCalendar />
+        <HolidayCalendar/>
 
         {/* Footer */}
-        <div className="footer" >
+        <div className="dashboard-footer text-center mt-5">
           © {new Date().getFullYear()} Leave Management Portal — Admin Panel
         </div>
       </div>
