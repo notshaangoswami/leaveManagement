@@ -84,7 +84,7 @@ function BasicExample({ onLogout }) {
       <Navbar expand="lg" className="bg-body-tertiary">
         <Container>
           <Button
-            variant="outline-secondary"
+            variant="outline-none"
             onClick={() => navigate(-1)}
             style={{ display: 'flex', alignItems: 'center', gap: '5px', marginRight: '25px'}}
           >
