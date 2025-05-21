@@ -11,6 +11,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import Modal from 'react-bootstrap/Modal'; // Import Modal for the logout confirmation
 import { VscAccount } from "react-icons/vsc";
 import "../css/Navbar.css";
+import BackIcon from "../assets/back.png";
 
 function BasicExample({ onLogout }) {
   const navigate = useNavigate();
@@ -80,97 +81,105 @@ function BasicExample({ onLogout }) {
 
   return (
     <>
-    <Navbar expand="lg" className="bg-body-tertiary">
-      <Container>
-        <Navbar.Brand href="/dashboard" className="d-flex align-items-center gap-2">
-    <img
-      src="leave.png"
-      alt="Logo"
-      width="50"
-      height="50"
-      className="rounded-circle"
-    />
-    <span className="brand-name">LEAVEit</span></Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto"></Nav>
-          <div className="d-flex gap-3 align-items-center">
-            {/* Bell Icon with Unread Count */}
-            <div
-              style={{ position: 'relative', cursor: 'pointer' }}
-              onClick={handleNotificationsClick}
-            >
-              <FaBell size={20} />
-              <Badge
-                bg={unreadCount > 0 ? 'danger' : 'secondary'} // Use 'danger' for >0, 'secondary' for 0
-                pill
-                style={{
-                  position: 'absolute',
-                  top: '-5px',
-                  right: '-10px',
-                  fontSize: '0.75rem',
-                }}
+      <Navbar expand="lg" className="bg-body-tertiary">
+        <Container>
+          <Button
+            variant="outline-secondary"
+            onClick={() => navigate(-1)}
+            style={{ display: 'flex', alignItems: 'center', gap: '5px', marginRight: '25px'}}
+          >
+            <img src={BackIcon} alt="Back" width="16" height="16" />
+          </Button>
+
+          <Navbar.Brand href="/dashboard" className="d-flex align-items-center gap-2">
+            <img
+              src="leave.png"
+              alt="Logo"
+              width="50"
+              height="50"
+              className="rounded-circle"
+            />
+            <span className="brand-name">LEAVEit</span></Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="me-auto"></Nav>
+            <div className="d-flex gap-3 align-items-center">
+              {/* Bell Icon with Unread Count */}
+              <div
+                style={{ position: 'relative', cursor: 'pointer' }}
+                onClick={handleNotificationsClick}
               >
-                {unreadCount}
-              </Badge>
+                <FaBell size={20} />
+                <Badge
+                  bg={unreadCount > 0 ? 'danger' : 'secondary'} // Use 'danger' for >0, 'secondary' for 0
+                  pill
+                  style={{
+                    position: 'absolute',
+                    top: '-5px',
+                    right: '-10px',
+                    fontSize: '0.75rem',
+                  }}
+                >
+                  {unreadCount}
+                </Badge>
+              </div>
+              <Dropdown align="end">
+                <Dropdown.Toggle
+                  variant="outline-primary"
+                  id="dropdown-basic"
+                  style={{
+                    padding: 0,
+                    border: 'none',
+                    background: 'none',
+                    borderRadius: '50%', // Make the toggle circular
+                    width: '40px', // Set a fixed width
+                    height: '40px', // Set a fixed height
+                    display: 'flex', // Center the icon
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <VscAccount
+                    size={30} // Adjust the size of the icon
+                    style={{
+                      color: '#007bff', // Set the color of the icon
+                    }}
+                  />
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item onClick={handleProfileClick}>Profile</Dropdown.Item>
+                  <Dropdown.Item onClick={handleLogoutClick}>Logout</Dropdown.Item>
+                  <Dropdown.Item onClick={handleChangePasswordClick}>Change Password</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
             </div>
-            <Dropdown align="end">
-            <Dropdown.Toggle
-    variant="outline-primary"
-    id="dropdown-basic"
-    style={{
-      padding: 0,
-      border: 'none',
-      background: 'none',
-      borderRadius: '50%', // Make the toggle circular
-      width: '40px', // Set a fixed width
-      height: '40px', // Set a fixed height
-      display: 'flex', // Center the icon
-      alignItems: 'center',
-      justifyContent: 'center',
-    }}
-  >
-    <VscAccount
-      size={30} // Adjust the size of the icon
-      style={{
-        color: '#007bff', // Set the color of the icon
-      }}
-    />
-  </Dropdown.Toggle>
-              <Dropdown.Menu>
-                <Dropdown.Item onClick={handleProfileClick}>Profile</Dropdown.Item>
-                <Dropdown.Item onClick={handleLogoutClick}>Logout</Dropdown.Item>
-                <Dropdown.Item onClick={handleChangePasswordClick}>Change Password</Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
-          </div>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
-     {/* Logout Confirmation Modal */}
-     <Modal show={showLogoutModal} onHide={handleCancelLogout} centered>
-     <Modal.Header closeButton>
-       <Modal.Title>Confirm Logout</Modal.Title>
-     </Modal.Header>
-     <Modal.Body>Are you sure you want to log out?</Modal.Body>
-     <Modal.Footer>
-     <Button
-      variant="info" // Change to light blue
-      style={{ backgroundColor: '#add8e6', borderColor: '#add8e6' }} // Custom light blue color
-      onClick={handleCancelLogout}
-    >
-      Cancel
-    </Button>
-    <Button
-      variant="info" // Change to light blue
-      style={{ backgroundColor: '#add8e6', borderColor: '#add8e6' }} // Custom light blue color
-      onClick={handleConfirmLogout}
-    >
-      Logout
-    </Button>
-     </Modal.Footer>
-   </Modal>
-  </> 
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+      {/* Logout Confirmation Modal */}
+      <Modal show={showLogoutModal} onHide={handleCancelLogout} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirm Logout</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure you want to log out?</Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="info" // Change to light blue
+            style={{ backgroundColor: '#add8e6', borderColor: '#add8e6' }} // Custom light blue color
+            onClick={handleCancelLogout}
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="info" // Change to light blue
+            style={{ backgroundColor: '#add8e6', borderColor: '#add8e6' }} // Custom light blue color
+            onClick={handleConfirmLogout}
+          >
+            Logout
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
   );
 }
 

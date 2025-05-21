@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Form, Button, Alert } from 'react-bootstrap';
 import axios from 'axios'; // For making the POST request
+import bgImage from '../assets/background-img.jpg';
 
 function CreateLeavePolicy() {
   const [leaveType, setLeaveType] = useState('');
@@ -58,8 +59,25 @@ function CreateLeavePolicy() {
   };
 
   return (
+    <div
+    style={{
+      backgroundImage: `url(${bgImage})`,
+      backgroundSize: 'cover',
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center',
+      minHeight: '100vh',
+      width: '100vw', // makes sure it covers full screen width
+      paddingTop: '2rem',
+      paddingBottom: '2rem',
+    }}
+  >
     <Container className="mt-4">
-      <h2 className="text-center mb-4">📜 Create Leave Policy</h2>
+      <h2 className="text-center mb-4" style={{
+        fontFamily: "Quicksand",
+        fontWeight: 'bold',
+        color: '#000957',
+
+      }}>CREATE LEAVE POLICY</h2>
 
       {message && <Alert variant={message.includes('success') ? 'success' : 'danger'}>{message}</Alert>}
 
@@ -194,6 +212,7 @@ function CreateLeavePolicy() {
         </Col>
       </Row>
     </Container>
+    </div>
   );
 }
 
