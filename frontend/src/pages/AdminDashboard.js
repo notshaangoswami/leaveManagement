@@ -10,6 +10,7 @@ import {
   Modal,
 } from 'react-bootstrap';
 import HolidayCalendar from "../components/HolidayCalendar";
+import '../css/AdminDashboard.css'
 
 function AdminDashboard({ onNavigate }) {
   const [summary, setSummary] = useState(null);
@@ -111,142 +112,197 @@ function AdminDashboard({ onNavigate }) {
     );
 
   return (
-    <div style={{ backgroundColor: '#f8f9fa', minHeight: '100vh' }}>
-      {/* Header */}
-      <div style={{ backgroundColor: '#e3f2fd', padding: '2rem 0' }}>
-        <h2 className="text-center text-primary fw-bold">🛠 Admin Dashboard</h2>
-      </div>
+      // <div className="dashboard-wrapper">
+      //   <Container className="dashboard-container">
+      //
+      //     <div className="dashboard-header text-center">
+      //       <h1 className="dashboard-title">🛠️ Admin Dashboard</h1>
+      //     </div>
+      //
+      //     <Row className="dashboard-metrics text-center mb-4">
+      //       <Col md={6}>
+      //         <Card className="metric-card">
+      //           <Card.Body>
+      //             <Card.Title>Total Employees</Card.Title>
+      //             <Card.Text className="metric-value">3</Card.Text>
+      //           </Card.Body>
+      //         </Card>
+      //       </Col>
+      //       <Col md={6}>
+      //         <Card className="metric-card">
+      //           <Card.Body>
+      //             <Card.Title>Total Managers</Card.Title>
+      //             <Card.Text className="metric-value">1</Card.Text>
+      //           </Card.Body>
+      //         </Card>
+      //       </Col>
+      //     </Row>
+      //
+      //     <Row className="dashboard-actions text-center mb-4">
+      //       <Col md={4}>
+      //         <Card className="action-card">
+      //           <Card.Body>
+      //             <Card.Title>Create Leave Policy</Card.Title>
+      //           </Card.Body>
+      //         </Card>
+      //       </Col>
+      //       <Col md={4}>
+      //         <Card className="action-card">
+      //           <Card.Body>
+      //             <Card.Title>Credit Leaves</Card.Title>
+      //           </Card.Body>
+      //         </Card>
+      //       </Col>
+      //       <Col md={4}>
+      //         <Card className="action-card">
+      //           <Card.Body>
+      //             <Card.Title>View Full Reports</Card.Title>
+      //           </Card.Body>
+      //         </Card>
+      //       </Col>
+      //     </Row>
+      //
+      //     <div className="calendar-section text-center">
+      //       <h4>Holiday Calendar</h4>
+      //       <HolidayCalendar/>
+      //       <Button className="mt-3" variant="success">+ Add New Holiday</Button>
+      //     </div>
+      //
+      //     <footer className="dashboard-footer text-center mt-5">
+      //       © 2025 Leave Management Portal — Admin Panel
+      //     </footer>
+      //
+      //   </Container>
+      // </div>
 
-      <Container className="py-5" style={{ maxWidth: '960px' }}>
-        {error && (
-          <Alert variant="danger" className="text-center mb-4">
-            Failed to load admin dashboard data.
-          </Alert>
-        )}
+      <div className="dashboard-container dashboard-wrapper" >
+        {/* Header */}
+        <div className="dashboard-header">
+          <h1 className="text-center dashboard-title">🛠 Admin Dashboard</h1>
+        </div>
 
-        {/* Stats */}
-        <Row className="g-4 justify-content-center mb-4">
-          {/* Total Employees Card */}
-          <Col md={4}>
-            <Card className="text-center shadow-sm border-0">
-              <Card.Body>
-                <Card.Title className="fw-semibold text-muted">Total Employees</Card.Title>
-                <Card.Text className="display-5 fw-bold text-primary">
-                  {summary?.totalEmployees || 0}
-                </Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-
-          {/* Total Managers Card */}
-          <Col md={4}>
-            <Card className="text-center shadow-sm border-0">
-              <Card.Body>
-                <Card.Title className="fw-semibold text-muted">Total Managers</Card.Title>
-                <Card.Text className="display-5 fw-bold text-success">
-                  {summary?.totalManagers || 0}
-                </Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-
-        {/* Other Cards */}
-        <Row className="g-4 justify-content-center mb-5">
-          <Col md={3}>
-            <Card
-              className="text-center shadow-sm border-0 h-100"
-              onClick={() => onNavigate('create-leave-policy')}
-              style={{ cursor: 'pointer', backgroundColor: '#e3f2fd' }}
-            >
-              <Card.Body>
-                <div style={{ fontSize: '2rem' }}>📄</div>
-                <Card.Text className="fw-semibold mt-2">Create Leave Policy</Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-
-          <Col md={3}>
-            <Card
-              className="text-center shadow-sm border-0 h-100"
-              onClick={() => onNavigate('leave-policies')} // Navigate to LeavePoliciesPage
-              style={{ cursor: 'pointer', backgroundColor: '#e3f2fd' }}
-            >
-              <Card.Body>
-                <div style={{ fontSize: '2rem' }}>➕</div>
-                <Card.Text className="fw-semibold mt-2">Credit Leaves</Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-
-          <Col md={3}>
-            <Card
-              className="text-center shadow-sm border-0 h-100"
-              onClick={handleViewReportsClick} // Show modal on click
-              style={{ cursor: 'pointer', backgroundColor: '#e3f2fd' }}
-            >
-              <Card.Body>
-                <div style={{ fontSize: '2rem' }}>📊</div>
-                <Card.Text className="fw-semibold mt-2">View Full Reports</Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
-
-      {/* Modal for Export Options */}
-      <Modal show={showModal} onHide={handleCloseModal} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Export Reports</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <div className="text-center">
-            <Button
-              variant="success"
-              className="m-2"
-              onClick={() => handleExport('excel')}
-            >
-              Download as Excel
-            </Button>
-            <Button
-              variant="danger"
-              className="m-2"
-              onClick={() => handleExport('pdf')}
-            >
-              Download as PDF
-            </Button>
-          </div>
-          {exportMessage && (
-            <Alert
-              variant={exportMessage.includes('success') ? 'success' : 'danger'}
-              className="mt-3"
-            >
-              {exportMessage}
+        <Container className="py-5" style={{ maxWidth: '960px' }}>
+          {error && (
+            <Alert variant="danger" className="text-center mb-4">
+              Failed to load admin dashboard data.
             </Alert>
           )}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
 
-      <HolidayCalendar />
+          {/* Stats */}
+          <Row className="g-4 justify-content-center dashboard-metrics text-center mb-4">
+            {/* Total Employees Card */}
+            <Col md={4}>
+              <Card className="text-center shadow-sm border-0 h-100">
+                <Card.Body>
+                  <Card.Title className="fw-semibold text-muted">Total Employees</Card.Title>
+                  <Card.Text className="display-5 fw-bold text-primary">
+                    {summary?.totalEmployees || 0}
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            </Col>
 
-      {/* Footer */}
-      <div
-        style={{
-          backgroundColor: '#e3f2fd',
-          padding: '1rem 0',
-          textAlign: 'center',
-          color: '#6c757d',
-          fontSize: '0.9rem',
-        }}
-      >
-        © {new Date().getFullYear()} Leave Management Portal — Admin Panel
+            {/* Total Managers Card */}
+            <Col md={4}>
+              <Card className="text-center shadow-sm border-0 h-100">
+                <Card.Body>
+                  <Card.Title className="fw-semibold text-muted">Total Managers</Card.Title>
+                  <Card.Text className="display-5 fw-bold text-success">
+                    {summary?.totalManagers || 0}
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+
+          {/* Other Cards */}
+          <Row className="g-4 justify-content-center dashboard-actions text-center mb-4">
+            <Col md={3}>
+              <Card
+                className="shadow-sm h-100 action-card"
+                onClick={() => onNavigate('create-leave-policy')}
+                style={{ cursor: 'pointer', backgroundColor: '#e3f2fd' }}
+              >
+                <Card.Body>
+                  <div className="card-icon">📄</div>
+                  <Card.Text className="fw-semibold mt-2">Create Leave Policy</Card.Text>
+                </Card.Body>
+              </Card>
+            </Col>
+
+            <Col md={3}>
+              <Card
+                className="text-center shadow-sm border-0 card-hover h-100"
+                onClick={() => onNavigate('leave-policies')} // Navigate to LeavePoliciesPage
+                style={{ cursor: 'pointer', backgroundColor: '#e3f2fd' }}
+              >
+                <Card.Body>
+                  <div style={{ fontSize: '2rem' }}>➕</div>
+                  <Card.Text className="fw-semibold mt-2">Credit Leaves</Card.Text>
+                </Card.Body>
+              </Card>
+            </Col>
+
+            <Col md={3}>
+              <Card
+                className="text-center shadow-sm border-0 card-hover h-100"
+                onClick={handleViewReportsClick} // Show modal on click
+                style={{ cursor: 'pointer', backgroundColor: '#e3f2fd' }}
+              >
+                <Card.Body>
+                  <div style={{ fontSize: '2rem' }}>📊</div>
+                  <Card.Text className="fw-semibold mt-2">View Full Reports</Card.Text>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+        </Container>
+
+        {/* Modal for Export Options */}
+        <Modal show={showModal} onHide={handleCloseModal} centered>
+          <Modal.Header closeButton>
+            <Modal.Title>Export Reports</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div className="text-center">
+              <Button
+                variant="success"
+                className="m-2"
+                onClick={() => handleExport('excel')}
+              >
+                Download as Excel
+              </Button>
+              <Button
+                variant="danger"
+                className="m-2"
+                onClick={() => handleExport('pdf')}
+              >
+                Download as PDF
+              </Button>
+            </div>
+            {exportMessage && (
+              <Alert
+                variant={exportMessage.includes('success') ? 'success' : 'danger'}
+                className="mt-3"
+              >
+                {exportMessage}
+              </Alert>
+            )}
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleCloseModal}>
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
+        <HolidayCalendar />
+
+        {/* Footer */}
+        <div className="footer" >
+          © {new Date().getFullYear()} Leave Management Portal — Admin Panel
+        </div>
       </div>
-    </div>
   );
 }
 
