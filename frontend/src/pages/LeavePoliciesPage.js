@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Table, Badge, Spinner, Alert, Button, Form, Row, Col } from 'react-bootstrap';
+import bgImage from '../assets/background-img.jpg';
 
 function LeavePoliciesPage() {
   const [leavePolicies, setLeavePolicies] = useState([]);
@@ -168,9 +169,24 @@ function LeavePoliciesPage() {
   };
 
   return (
+    <div
+    style={{
+      backgroundImage: `url(${bgImage})`,
+      backgroundSize: 'cover',
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center',
+      minHeight: '100vh',
+      width: '100vw', // makes sure it covers full screen width
+      paddingTop: '2rem',
+      paddingBottom: '2rem',
+    }}
+    >
     <Container className="mt-5">
-      <h2 className="text-center mb-4" style={{ fontFamily: 'Poppins, sans-serif', color: '#2b6cb0' }}>
-        Leave Policies
+      <h2 className="text-center mb-4" style={{
+        fontFamily: "Quicksand",
+        fontWeight: 'bold',
+        color: '#000957', }}>
+        LEAVE POLICIES
       </h2>
 
       {loading ? (
@@ -328,6 +344,7 @@ function LeavePoliciesPage() {
         </>
       )}
     </Container>
+    </div>
   );
 }
 

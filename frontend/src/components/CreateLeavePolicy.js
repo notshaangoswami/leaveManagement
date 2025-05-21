@@ -83,7 +83,12 @@ function CreateLeavePolicy() {
 
       <Row className="justify-content-center">
         <Col md={8}>
-          <Form onSubmit={handleSubmit} className="shadow p-4 rounded bg-light">
+          <Form onSubmit={handleSubmit} className="shadow p-4 rounded"
+            style={{
+              backgroundColor: 'rgba(255, 255, 255, 0.4)', // white with 80% opacity
+              backdropFilter: 'blur(4px)', // optional: gives a frosted glass effect
+            }}
+          >
             <Form.Group controlId="leaveType" className="mb-3">
               <Form.Label>Leave Type</Form.Label>
               <Form.Select
