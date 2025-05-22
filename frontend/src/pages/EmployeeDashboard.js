@@ -272,11 +272,16 @@ function EmployeeDashboard({ onNavigate }) {
       {/* Footer */}
       <div
         style={{
-          backgroundColor: '#e3f2fd',
+          backgroundColor: '#030637',
           padding: '1rem 0',
           textAlign: 'center',
-          color: '#6c757d',
+          color: '#E8F9FF',
           fontSize: '0.9rem',
+          width: '100%',
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          zIndex: 100,
         }}
       >
         © {new Date().getFullYear()} Leave Management Portal — Employee Panel

@@ -299,7 +299,19 @@ function AdminDashboard({ onNavigate }) {
         <HolidayCalendar/>
 
         {/* Footer */}
-        <div className="dashboard-footer text-center mt-5">
+        <div className="dashboard-footer text-center mt-5"
+         style={{
+          backgroundColor: '#030637',
+          padding: '1rem 0',
+          textAlign: 'center',
+          color: '#E8F9FF',
+          fontSize: '0.9rem',
+          width: '100%',
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          zIndex: 100,
+        }}>
           © {new Date().getFullYear()} Leave Management Portal — Admin Panel
         </div>
       </div>
