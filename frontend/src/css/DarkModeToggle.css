@@ -17,3 +17,19 @@ body.dark-mode {
     background-color: #333333;
     color: #66b2ff;
 }
+
+/* Light mode navbar adjustments */
+body:not(.dark-mode) .navbar .navbar-brand span,
+body:not(.dark-mode) .navbar .nav-link,
+body:not(.dark-mode) .nav-back-btn img,
+body:not(.dark-mode) .notification-icon svg,
+body:not(.dark-mode) .nav-avatar-btn svg {
+    color: #000 !important;
+    filter: brightness(0); /* Ensures icons like back arrow are visible in black */
+}
+
+/* Keep logo unchanged (exclude from brightness filter) */
+body:not(.dark-mode) .navbar .navbar-brand img {
+    filter: none !important;
+}
+
