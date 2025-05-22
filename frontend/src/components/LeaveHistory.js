@@ -86,8 +86,8 @@ function LeaveHistory() {
 
   return (
     <Container className="mt-5">
-      <h2 className="text-center mb-4" style={{ fontFamily: 'Poppins, sans-serif', color: '#2b6cb0' }}>
-        Leave History
+      <h2 className="text-center mb-4" style={{ fontFamily: 'Quicksand, sans-serif', fontWeight: 'bold', color: '#053963' }}>
+        LEAVE HISTORY
       </h2>
 
       {loading ? (

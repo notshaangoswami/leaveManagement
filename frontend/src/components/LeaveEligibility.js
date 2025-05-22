@@ -38,8 +38,8 @@ function LeaveEligibilityPage() {
 
   return (
     <Container className="mt-5">
-      <h2 className="text-center mb-4" style={{ fontFamily: 'Poppins, sans-serif', color: '#2b6cb0' }}>
-        Leave Eligibility
+      <h2 className="text-center mb-4" style={{ fontFamily: 'Quicksand, sans-serif', color: '#053963', fontWeight: 'bold' }}>
+        LEAVE ELIGIBILITY
       </h2>
 
       {loading ? (

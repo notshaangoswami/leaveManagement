@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Container, Form, Button, Alert } from 'react-bootstrap';
+import bgImage from "../assets/bg1.png";
 
 export default function LeaveForm() {
   const [leaveType, setLeaveType] = useState('');
@@ -53,12 +54,28 @@ export default function LeaveForm() {
   };
 
   return (
+    <div
+    style={{
+      backgroundImage: `url(${bgImage})`,
+      backgroundSize: 'cover',
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center',
+      minHeight: '100vh',
+      width: '100vw', // makes sure it covers full screen width
+      paddingTop: '2rem',
+      paddingBottom: '2rem',
+    }}
+  >
     <Container className="mt-5">
-      <h2 className="text-center mb-4" style={{ fontFamily: 'Poppins, sans-serif', color: '#2b6cb0' }}>🌿 Apply for Leave</h2>
+      <h2 className="text-center mb-4" style={{ fontFamily: "Quicksand, sans-serif", color: '#053963',fontWeight: 'bold'}}>APPLY FOR LEAVE</h2>
 
       {message && <Alert variant={message.includes('success') ? 'success' : 'danger'}>{message}</Alert>}
 
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit}
+      style={{
+        backgroundColor: 'white',
+        color: 'black'
+      }} className="shadow p-4 rounded">
         <Form.Group controlId="leaveType" className="mb-3">
           <Form.Label>Leave Type</Form.Label>
           <Form.Control
@@ -135,5 +152,6 @@ export default function LeaveForm() {
         </Button>
       </Form>
     </Container>
+    </div>
   );
 }

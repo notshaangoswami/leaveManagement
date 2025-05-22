@@ -1,5 +1,5 @@
 body {
-    background: url('../assets/bg1.png') no-repeat center center fixed;
+    background: url('../assets/bg1.png') no-repeat center center fixed !important;
     background-size: cover;
     margin: 0;
     font-family: 'Segoe UI', sans-serif;
@@ -12,7 +12,7 @@ body {
 }
 
 .dashboard-container {
-    background: url('../assets/background-img.jpg') no-repeat center center fixed;
+    background: url('../assets/bg1.png') no-repeat center center fixed !important;
     background-color: rgba(255, 255, 255, 0.9);
     border-radius: 1rem;
     padding: 2rem;
@@ -21,8 +21,9 @@ body {
 
 .dashboard-title {
     font-size: 2.5rem;
+    font-family: "M PLUS 2", sans-serif;;
     font-weight: bold;
-    color: #1976d2;
+    color: #053963 !important;
     margin-bottom: 1.5rem;
 }
 

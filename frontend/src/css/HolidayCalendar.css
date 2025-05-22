@@ -110,7 +110,7 @@
 }
 
 .addHoliday{
-  background-color: #86a3e8;
+  background-color: #6284d5;
   border: none;
   padding: 10px 15px;
   cursor: pointer;
@@ -120,7 +120,7 @@
 
 .addHoliday:hover{
   color: white; /* or any hover text color */
-  background-color: #6284d5;
+  background-color: #4b70c8;
 }
 
 /* Holiday Details */
