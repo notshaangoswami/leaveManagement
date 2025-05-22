@@ -83,8 +83,9 @@
   position: relative;
 }
 
-.notification-icon:hover {
-  color: #f8f9fa;
+.notification-icon:hover .bell-icon {
+  color: #007bff;
+  transition: color 0.2s;
 }
 
 .notification-badge {

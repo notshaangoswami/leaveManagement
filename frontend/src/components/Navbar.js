@@ -230,7 +230,7 @@ function BasicExample({ onLogout }) {
                     onClick={handleNotificationsClick}
                     title="Notifications"
                 >
-                  <FaBell size={22}/>
+                  <FaBell size={22} className="bell-icon"/>
                   {/*<Badge*/}
                   {/*    bg={unreadCount > 0 ? 'danger' : 'secondary'}*/}
                   {/*    pill*/}
