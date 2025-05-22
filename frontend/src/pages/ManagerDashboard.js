@@ -5,10 +5,11 @@ import {
   Col,
   Card,
   Alert,
-  Spinner, Modal, Button,
+  Spinner,
 } from 'react-bootstrap';
 import HolidayCalendar from "../components/HolidayCalendar";
 import '../css/ManagerDashboard.css'
+import bgImage from "../assets/background-img1.jpg";
 
 function ManagerDashboard({ onNavigate }) {
   const [leavesRemaining, setLeavesRemaining] = useState(0);
@@ -197,7 +198,17 @@ function ManagerDashboard({ onNavigate }) {
       // </div>
 
 
-      <div className="dashboard-container-manager dashboard-wrapper">
+      <div className="dashboard-container-manager dashboard-wrapper"
+      
+      style={{
+        
+        minHeight: '100vh',
+        backgroundImage: `url(${bgImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+      }}
+    >
         {/* Header */}
         <div className="dashboard-header">
           <h1 className="text-center dashboard-title">‍💼 Manager Dashboard</h1>
@@ -296,7 +307,19 @@ function ManagerDashboard({ onNavigate }) {
         <HolidayCalendar/>
 
         {/* Footer */}
-        <div className="dashboard-footer text-center mt-5">
+        <div className="dashboard-footer text-center mt-5"
+        style={{
+          backgroundColor: '#030637',
+          padding: '1rem 0',
+          textAlign: 'center',
+          color: '#E8F9FF',
+          fontSize: '0.9rem',
+          width: '100%',
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          zIndex: 100,
+        }}>
           © {new Date().getFullYear()} Leave Management Portal — Admin Panel
         </div>
       </div>

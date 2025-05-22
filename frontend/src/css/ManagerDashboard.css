@@ -1,5 +1,5 @@
 body {
-    background: url('../assets/bg5.jpeg') no-repeat center center fixed;
+    background: url('../assets/background-login.jpg') no-repeat center center fixed;
     background-size: cover;
     margin: 0;
     font-family: 'Segoe UI', sans-serif;
@@ -12,7 +12,7 @@ body {
 }
 
 .dashboard-container-manager {
-    background: url('../assets/bg5.jpeg') no-repeat center center fixed;
+    background: url('../assets/background-login.jpg') no-repeat center center fixed;
     background-color: rgba(255, 255, 255, 0.9);
     border-radius: 1rem;
     padding: 2rem;
