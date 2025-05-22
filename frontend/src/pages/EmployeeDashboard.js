@@ -185,7 +185,7 @@ function EmployeeDashboard({ onNavigate }) {
     //     </Row>
     //   </Container>
 
-    <div className="dashboard-container dashboard-wrapper">
+    <div className="dashboard-container-employee dashboard-wrapper">
         {/* Header */}
         <div className="dashboard-header">
           <h1 className="text-center dashboard-title">Employee Dashboard</h1>
