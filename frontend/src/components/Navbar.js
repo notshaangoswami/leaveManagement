@@ -12,7 +12,7 @@ import Modal from 'react-bootstrap/Modal'; // Import Modal for the logout confir
 import { VscAccount } from "react-icons/vsc";
 import "../css/Navbar.css";
 import "../css/DarkModeToggle.css";
-import BackIcon from "../assets/back.png";
+import BackIcon from "../assets/back-white.png";
 
 function BasicExample({ onLogout }) {
   const navigate = useNavigate();
