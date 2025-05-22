@@ -8,6 +8,7 @@ import {
   Spinner,
 } from 'react-bootstrap';
 import HolidayCalendar from "../components/HolidayCalendar";
+import '../css/EmployeeDashboard.css';
 
 function EmployeeDashboard({ onNavigate }) {
   const [summary, setSummary] = useState({ leavesApplied: 0, leavesRemaining: 0 });
