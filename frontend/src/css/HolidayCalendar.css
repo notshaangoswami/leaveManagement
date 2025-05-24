@@ -1,0 +1,163 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
+/* Calendar.css */
+.calendar-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;  /* Center horizontally */
+  align-items: center;      /* Center vertically if needed */
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.react-calendar {
+  width: 500px;
+  max-width: 90%;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+.national-holiday {
+  background-color: #ffe0b2 !important;
+  border-radius: 50%;
+  color: #d84315;
+}
+
+.admin-holiday {
+  background-color: #c5e1a5 !important;
+  border-radius: 50%;
+  color: #33691e;
+}
+
+.holiday-name {
+  font-size: 0.6em;
+  text-align: center;
+  color: #333;
+  margin-top: 2px;
+}
+
+.holiday-details {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+/* Make the calendar header blue with white text */
+.react-calendar__navigation {
+  background-color: #86a3e8;
+  margin-bottom: 0 !important;
+}
+
+/* Highlight today with a light blue background */
+.react-calendar__tile--now {
+  background: #cce5ff !important; /* Light blue */
+  border-radius: 6px;
+  font-weight: bold;
+  color: #004085; /* Optional darker text for contrast */
+}
+
+/* Optional: Add a hover effect on all tiles */
+.react-calendar__tile:hover {
+  background: #f0f8ff;
+  border-radius: 6px;
+}
+
+/* Style all buttons in the calendar header */
+.react-calendar__navigation button {
+  color: white !important;
+  font-weight: bold;
+  background: transparent !important;
+  border: none !important;
+  transition: background-color 0.3s ease;
+}
+
+/* Darker blue on hover */
+.react-calendar__navigation button:hover {
+  background-color: #6284d5 !important; /* Darker blue */
+  cursor: pointer;
+}
+
+/* Optional: disabled buttons (e.g., when can't go further) */
+.react-calendar__navigation button:disabled {
+  color: rgba(255, 255, 255, 0.5);
+  background: none;
+  cursor: not-allowed;
+}
+
+/* Style the weekday header (Sun, Mon, ...) */
+.react-calendar__month-view__weekdays {
+  background-color: #e6f0ff; /* Light blue background */
+  padding-top: 0;
+  margin-top: 0;
+}
+
+/* Style each individual weekday cell */
+.react-calendar__month-view__weekdays__weekday {
+  text-align: center;
+  font-weight: 600;
+  padding: 10px 0;
+  color: #004085; /* Darker text for contrast */
+}
+
+.calendar-container h3 {
+  color: #00357a;
+  font-family: 'Quicksand', sans-serif;
+  font-weight: bold;
+}
+
+.addHoliday{
+  background-color: #6284d5;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-weight: bold;
+}
+
+.addHoliday:hover{
+  color: white; /* or any hover text color */
+  background-color: #4b70c8;
+}
+
+/* Holiday Details */
+.holiday-details {
+  background-color: #f9f9f9;
+  border-left: 4px solid #00357a;
+  text-transform: lowercase;
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 8px;
+  font-family: 'Quicksand', sans-serif;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.holiday-details h4 {
+  color: #00357a;
+  margin-bottom: 10px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.holiday-details p {
+  margin: 8px 0;
+  color: #333;
+}
+
+.holiday-details p strong {
+  color: #007bff;
+}
+
+.holiday-details button {
+  margin-top: 10px;
+  margin-right: 10px;
+  font-weight: bold;
+  transition: transform 0.2s ease;
+}
+
+.holiday-details button:hover {
+  transform: scale(1.05);
+}

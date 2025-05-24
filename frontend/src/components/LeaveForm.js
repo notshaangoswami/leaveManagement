@@ -1,14 +1,15 @@
-// src/components/LeaveForm.js
-
 import React, { useState } from 'react';
-import { Container, Row, Col, Form, Button, Alert } from 'react-bootstrap';
-import { applyLeave } from '../services/api'; // Assume this API exists
+import { Container, Form, Button, Alert } from 'react-bootstrap';
+import bgImage from "../assets/bg1.png";
 
-function LeaveForm() {
+export default function LeaveForm() {
   const [leaveType, setLeaveType] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [reason, setReason] = useState('');
+  const [contactAddress, setContactAddress] = useState('');
+  const [contactPhone, setContactPhone] = useState('');
+  const [attachmentPath, setAttachmentPath] = useState(null);
   const [message, setMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -17,14 +18,29 @@ function LeaveForm() {
     setIsSubmitting(true);
     setMessage('');
 
+    const leaveApplication = {
+      leaveType,
+      startDate,
+      endDate,
+      reason,
+      contactAddress,
+      contactPhone,
+      attachmentPath,
+    };
+
+    const token = localStorage.getItem('token');
+
     try {
-      const response = await applyLeave({
-        leaveType,
-        startDate,
-        endDate,
-        reason,
+      const response = await fetch('http://localhost:8080/api/leave-applications', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`, 
+},
+        body: JSON.stringify(leaveApplication),
       });
-      if (response.status === 200) {
+
+      if (response.ok) {
         setMessage('Leave applied successfully!');
       } else {
         setMessage('Failed to apply leave. Please try again.');
@@ -38,78 +54,104 @@ function LeaveForm() {
   };
 
   return (
+    <div
+    style={{
+      backgroundImage: `url(${bgImage})`,
+      backgroundSize: 'cover',
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center',
+      minHeight: '100vh',
+      width: '100vw', // makes sure it covers full screen width
+      paddingTop: '2rem',
+      paddingBottom: '2rem',
+    }}
+  >
     <Container className="mt-5">
-      <h2 className="text-center mb-4" style={{ fontFamily: 'Poppins, sans-serif', color: '#2b6cb0' }}>🌿 Apply for Leave</h2>
+      <h2 className="text-center mb-4" style={{ fontFamily: "Quicksand, sans-serif", color: '#053963',fontWeight: 'bold'}}>APPLY FOR LEAVE</h2>
 
       {message && <Alert variant={message.includes('success') ? 'success' : 'danger'}>{message}</Alert>}
 
-      <Row className="justify-content-center">
-        <Col md={6} className="p-4 rounded shadow-lg bg-light">
-          <Form onSubmit={handleSubmit}>
-            <Form.Group controlId="leaveType" className="mb-3">
-              <Form.Label style={{ color: '#2b6cb0', fontWeight: 'bold' }}>Leave Type</Form.Label>
-              <Form.Control
-                as="select"
-                value={leaveType}
-                onChange={(e) => setLeaveType(e.target.value)}
-                required
-                className="custom-select-input"
-              >
-                <option value="">Select Leave Type</option>
-                <option value="Sick">Sick</option>
-                <option value="Vacation">Vacation</option>
-                <option value="Personal">Personal</option>
-              </Form.Control>
-            </Form.Group>
+      <Form onSubmit={handleSubmit}
+      style={{
+        backgroundColor: 'white',
+        color: 'black'
+      }} className="shadow p-4 rounded">
+        <Form.Group controlId="leaveType" className="mb-3">
+          <Form.Label>Leave Type</Form.Label>
+          <Form.Control
+            as="select"
+            value={leaveType}
+            onChange={(e) => setLeaveType(e.target.value)}
+            required
+          >
+            <option value="">Select Leave Type</option>
+            <option value="CASUAL">Casual</option>
+            <option value="SICK">Sick</option>
+            <option value="ANNUAL">Annual</option>
+          </Form.Control>
+        </Form.Group>
 
-            <Form.Group controlId="startDate" className="mb-3">
-              <Form.Label style={{ color: '#2b6cb0', fontWeight: 'bold' }}>Start Date</Form.Label>
-              <Form.Control
-                type="date"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-                required
-                className="custom-select-input"
-              />
-            </Form.Group>
+        <Form.Group controlId="startDate" className="mb-3">
+          <Form.Label>Start Date</Form.Label>
+          <Form.Control
+            type="date"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            required
+          />
+        </Form.Group>
 
-            <Form.Group controlId="endDate" className="mb-3">
-              <Form.Label style={{ color: '#2b6cb0', fontWeight: 'bold' }}>End Date</Form.Label>
-              <Form.Control
-                type="date"
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-                required
-                className="custom-select-input"
-              />
-            </Form.Group>
+        <Form.Group controlId="endDate" className="mb-3">
+          <Form.Label>End Date</Form.Label>
+          <Form.Control
+            type="date"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+            required
+          />
+        </Form.Group>
 
-            <Form.Group controlId="reason" className="mb-3">
-              <Form.Label style={{ color: '#2b6cb0', fontWeight: 'bold' }}>Reason for Leave</Form.Label>
-              <Form.Control
-                as="textarea"
-                rows={4}
-                value={reason}
-                onChange={(e) => setReason(e.target.value)}
-                required
-                className="custom-select-input"
-              />
-            </Form.Group>
+        <Form.Group controlId="reason" className="mb-3">
+          <Form.Label>Reason</Form.Label>
+          <Form.Control
+            as="textarea"
+            rows={3}
+            value={reason}
+            onChange={(e) => setReason(e.target.value)}
+            required
+          />
+        </Form.Group>
 
-            <Button
-              variant="primary"
-              type="submit"
-              disabled={isSubmitting}
-              className="w-100"
-              style={{ backgroundColor: '#2b6cb0', borderColor: '#2b6cb0', fontSize: '16px', padding: '10px' }}
-            >
-              {isSubmitting ? 'Applying...' : 'Apply Leave'}
-            </Button>
-          </Form>
-        </Col>
-      </Row>
+        <Form.Group controlId="contactAddress" className="mb-3">
+          <Form.Label>Contact Address</Form.Label>
+          <Form.Control
+            type="text"
+            value={contactAddress}
+            onChange={(e) => setContactAddress(e.target.value)}
+            required
+          />
+        </Form.Group>
+
+        <Form.Group controlId="contactPhone" className="mb-3">
+          <Form.Label>Superior Email-id</Form.Label>
+          <Form.Control
+            type="tel"
+            value={contactPhone}
+            onChange={(e) => setContactPhone(e.target.value)}
+            required
+          />
+        </Form.Group>
+
+        <Button
+          variant="primary"
+          type="submit"
+          disabled={isSubmitting}
+          className="w-100"
+        >
+          {isSubmitting ? 'Submitting...' : 'Apply Leave'}
+        </Button>
+      </Form>
     </Container>
+    </div>
   );
 }
-
-export default LeaveForm;
