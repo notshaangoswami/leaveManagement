@@ -115,19 +115,6 @@ export default function LoginPage({ onLoginSuccess }) {
           </button>
         </form>
 
-        <div className="text-center mt-3">
-          <p className="mb-0">
-            Don't have an account?{' '}
-            <Link to="/register" className="text-primary fw-semibold">
-              Register here
-            </Link>
-          </p>
-          <p className="mt-2">
-    <Link to="/forgot-password" className="text-primary fw-semibold">
-      Forgot Password?
-    </Link>
-  </p>
-        </div>
       </div>
     </div>
   );
