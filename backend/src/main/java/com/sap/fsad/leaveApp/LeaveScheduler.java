@@ -18,8 +18,6 @@ public class LeaveScheduler {
         System.setProperty("MYSQL_PASSWORD", dotenv.get("MYSQL_PASSWORD"));
         System.setProperty("SPRING_MAIL_USERNAME", dotenv.get("SPRING_MAIL_USERNAME"));
         System.setProperty("SPRING_MAIL_PASSWORD", dotenv.get("SPRING_MAIL_PASSWORD"));
-//        System.setProperty("SPRING_DATASOURCE_USERNAME", dotenv.get("SPRING_DATASOURCE_USERNAME"));
-//        System.setProperty("SPRING_DATASOURCE_PASSWORD", dotenv.get("SPRING_DATASOURCE_PASSWORD"));
         SpringApplication.run(LeaveScheduler.class, args);
     }
 
