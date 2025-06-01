@@ -9,6 +9,7 @@ export default function LeaveForm() {
   const [reason, setReason] = useState('');
   const [contactAddress, setContactAddress] = useState('');
   const [contactPhone, setContactPhone] = useState('');
+  const [superiorEmail, setSuperiorEmail] = useState('');
   const [attachmentPath, setAttachmentPath] = useState(null);
   const [message, setMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -25,6 +26,7 @@ export default function LeaveForm() {
       reason,
       contactAddress,
       contactPhone,
+      superiorEmail,
       attachmentPath,
     };
 
@@ -87,7 +89,8 @@ export default function LeaveForm() {
             <option value="">Select Leave Type</option>
             <option value="CASUAL">Casual</option>
             <option value="SICK">Sick</option>
-            <option value="ANNUAL">Annual</option>
+            <option value="EARNED">Earned</option>
+            <option value="SPECIAL">Special</option>
           </Form.Control>
         </Form.Group>
 
@@ -132,12 +135,12 @@ export default function LeaveForm() {
           />
         </Form.Group>
 
-        <Form.Group controlId="contactPhone" className="mb-3">
+        <Form.Group controlId="superiorEmail" className="mb-3">
           <Form.Label>Superior Email-id</Form.Label>
           <Form.Control
-            type="tel"
-            value={contactPhone}
-            onChange={(e) => setContactPhone(e.target.value)}
+            type="text"
+            value={superiorEmail}
+            onChange={(e) => setSuperiorEmail(e.target.value)}
             required
           />
         </Form.Group>
