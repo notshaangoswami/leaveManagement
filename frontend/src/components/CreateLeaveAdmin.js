@@ -16,7 +16,7 @@ function CreateLeaveAdmin({ show, onHide, onCreated }) {
       date: newDate,
       type: newType,
       description: newDesc,
-      recurring: newRecurring
+      isRecurring: newRecurring
     };
 
     try {
