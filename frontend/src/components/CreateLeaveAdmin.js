@@ -95,15 +95,6 @@ function CreateLeaveAdmin({ show, onHide, onCreated }) {
               onChange={e => setNewDesc(e.target.value)}
             />
           </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Check
-              type="checkbox"
-              label="Recurring"
-              checked={newRecurring}
-              onChange={e => setNewRecurring(e.target.checked)}
-            />
-          </Form.Group>
         </Form>
       </Modal.Body>
       <Modal.Footer>
